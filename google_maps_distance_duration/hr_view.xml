@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_job_form" model="ir.ui.view">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <button name="set_open" position="after">
+                    <button name="get_duration" string="Get duration" type="object"/>
+                </button>
+            </field>
+        </record>
+        
+        <!--  <record id="view_courier_form" model="ir.ui.view">
+            <field name="name">courier.routing.path.form</field>
+            <field name="model">courier.routing.path</field>
+            <field name="inherit_id" ref="courier.view_courier_routing_path_form"/>
+            <field name="arch" type="xml">
+                <field name="carrier_id" position="after">
+                     <button name="get_duration" string="Get duration" type="object"/>
+                 </field>
+            </field>
+        </record>
+ -->
+    </data>
+</openerp>
