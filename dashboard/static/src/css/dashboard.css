@@ -1,0 +1,328 @@
+.o_kanban_view.o_kanban_ungrouped.o_kanban_record.own{
+    min-width: 100%;
+}
+
+
+.btn-outline {
+  color: inherit;
+  background-color: transparent;
+  transition: all .5s;
+}
+.btn-primary.btn-outline {
+  color: #428bca;
+}
+.btn-success.btn-outline {
+  color: #5cb85c;
+}
+.btn-info.btn-outline {
+  color: #5bc0de;
+}
+.btn-warning.btn-outline {
+  color: #f0ad4e;
+}
+.btn-danger.btn-outline {
+  color: #d9534f;
+}
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover {
+  color: white;
+}
+
+
+.flot-chart {
+  display: block;
+  height: 400px;
+}
+.flot-chart-content {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.428571429;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 18px;
+  line-height: 1.33;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
+}
+.show-grid [class^="col-"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid #ddd;
+  background-color: #eee !important;
+}
+.show-grid {
+  margin: 15px 0;
+}
+.huge {
+  font-size: 40px;
+}
+.panel-green {
+  border-color: #5cb85c;
+}
+.panel-green > .panel-heading {
+  border-color: #5cb85c;
+  color: white;
+  background-color: #5cb85c;
+}
+.panel-green > a {
+  color: #5cb85c;
+}
+.panel-green > a:hover {
+  color: #3d8b3d;
+}
+.panel-red {
+  border-color: #d9534f;
+}
+.panel-red > .panel-heading {
+  border-color: #d9534f;
+  color: white;
+  background-color: #d9534f;
+}
+.panel-red > a {
+  color: #d9534f;
+}
+.panel-red > a:hover {
+  color: #b52b27;
+}
+.panel-yellow {
+  border-color: #f0ad4e;
+}
+.panel-yellow > .panel-heading {
+  border-color: #f0ad4e;
+  color: white;
+  background-color: #f0ad4e;
+}
+.panel-yellow > a {
+  color: #f0ad4e;
+}
+.panel-yellow > a:hover {
+  color: #df8a13;
+}
+
+.panel-orange {
+  border-color: #fc6600;
+}
+.panel-orange > .panel-heading {
+  border-color: #fc6600;
+  color: white;
+  background-color: #fc6600;
+}
+.panel-orange > a {
+  color: #fc6600;
+}
+.panel-orange > a:hover {
+  color: #ff7417;
+}
+
+.panel-salmon {
+  border-color: #fa8072;
+}
+.panel-salmon > .panel-heading {
+  border-color: #fa8072;
+  color: white;
+  background-color: #fa8072;
+}
+.panel-salmon > a {
+  color: #fa8072;
+}
+.panel-salmon > a:hover {
+  color: #cd5c5c;
+}
+
+.panel-scarlet {
+  border-color: #ff2400;
+}
+.panel-scarlet > .panel-heading {
+  border-color: #ff2400;
+  color: white;
+  background-color: #ff2400;
+}
+.panel-scarlet > a {
+  color: #ff2400;
+}
+.panel-scarlet > a:hover {
+  color: #2c1807;
+}
+
+.panel-pink {
+  border-color: #fc0fc0;
+}
+.panel-pink > .panel-heading {
+  border-color: #fc0fc0;
+  color: white;
+  background-color: #fc0fc0;
+}
+.panel-pink > a {
+  color: #fc0fc0;
+}
+.panel-pink > a:hover {
+  color: #2ff0090;
+}
+
+.panel-violet {
+  border-color: #b200ed;
+}
+.panel-violet > .panel-heading {
+  border-color: #b200ed;
+  color: white;
+  background-color: #b200ed;
+}
+.panel-violet > a {
+  color: #b200ed;
+}
+.panel-violet > a:hover {
+  color: #784b84;
+}
+
+.panel-navy {
+  border-color: #000080;
+}
+.panel-navy > .panel-heading {
+  border-color: #000080;
+  color: white;
+  background-color: #000080;
+}
+.panel-navy > a {
+  color: #000080;
+}
+.panel-navy > a:hover {
+  color: #1c2951;
+}
+
+.panel-olive {
+  border-color: #708238;
+}
+.panel-olive > .panel-heading {
+  border-color: #708238;
+  color: white;
+  background-color: #708238;
+}
+.panel-olive > a {
+  color: #708238;
+}
+.panel-olive > a:hover {
+  color: #4b5320;
+}
+
+.panel-brown {
+  border-color: #7c4700;
+}
+.panel-brown > .panel-heading {
+  border-color: #7c4700;
+  color: white;
+  background-color: #7c4700;
+}
+.panel-brown > a {
+  color: #7c4700;
+}
+.panel-brown > a:hover {
+  color: #622a0f;
+}
+
+.panel-gray {
+  border-color: #828282;
+}
+.panel-gray > .panel-heading {
+  border-color: #828282;
+  color: white;
+  background-color: #828282;
+}
+.panel-gray > a {
+  color: #828282;
+}
+.panel-gray > a:hover {
+  color: #48494b;
+}
+
+.panel-moss {
+  border-color: #8a9a5b;
+}
+.panel-moss > .panel-heading {
+  border-color: #8a9a5b;
+  color: white;
+  background-color: #8a9a5b;
+}
+.panel-moss > a {
+  color: #8a9a5b;
+}
+.panel-moss > a:hover {
+  color: #4b5320;
+}
+
+.panel-wood {
+  border-color: #402f1d;
+}
+.panel-wood > .panel-heading {
+  border-color: #402f1d;
+  color: white;
+  background-color: #402f1d;
+}
+.panel-wood > a {
+  color: #402f1d;
+}
+.panel-wood > a:hover {
+  color: #351e10;
+}
+
+.btn-setting{
+	    padding: 7px 7px;
+	    margin-bottom:5px;
+}
+.btn-setting fa{
+	margin-right:5px;
+}
+.howl-iconpicker .geticonval,.howl-iconpicker-close{
+	-webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input.input1.input {
+    border: 1px solid grey;
+    width: 20%;
+    margin-bottom:5px;
+}
+.btn-dadhboard{
+	margin-left:5px;
+}
+.openerp .oe_kanban_view .oe_kanban_action_button.detail{
+	height: inherit;
+	color: #337ab7;
+    background-color: #fff;
+    padding: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+.openerp .oe_kanban_view .col-lg-3.col-md-4{
+	margin-bottom:6px;
+}
+button.btn.btn-default.btn-setting.pull-right.oe_kanban_action.oe_kanban_action_button,button#refresh {
+    color: #7C7BAD;
+    padding: 10px 15px;
+    height: inherit;
+    background-color: inherit;
+    background-image: none;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
