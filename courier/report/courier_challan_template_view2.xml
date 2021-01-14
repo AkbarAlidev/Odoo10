@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="courier.courier_challan">
+
+        <t t-call="report.html_container">
+            <!--            <t t-call="report.external_layout">-->
+            <div class="page">
+                <t t-foreach="docs" t-as="obj">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:20%;">
+                                <img style="width:50%;height:10%" t-att-src="'/courier/static/src/img/arman.png'"/>
+                            </td>
+                            <td style="text-align: center;padding-top:5%;font-size:15px; vertical-align: middle;"
+                                class="col-xs-5">
+                                <img t-if="obj.number and len(obj.number) == 13"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"
+                                     style="width:100%;height:28%;"/>
+                                <img t-elif="obj.number and len(obj.number) == 8"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"
+                                     style="width:100%;height:28%;"/>
+                                <img t-else=""
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"
+                                     style="width:100%;height:28%;"/>
+                                <span t-field="obj.number"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br></br>
+                    <center>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;height: 30px; border: 2px solid black;font-size:18px;">
+                                    Customer Reference Number:
+                                    <br/>
+                                    <b>
+                                        <span style="font-size:20px;padding-left:7%;" t-field="obj.sender_id.code"/>
+                                    </b>
+                                </td>
+                                <td style="width: 15%;height: 30px; border: 2px solid black;font-size:18px; ">No.of
+                                    pieces
+                                    <br/>
+                                    <b><span style="padding-left:8%;"></span>1
+                                    </b>
+                                </td>
+                                <td style="width: 15%;height: 30px; border: 2px solid black;font-size:18px; ">Weight
+                                    <br/>
+                                    <b>
+                                        <span style="font-size:18px;padding-left:5%;" t-field="obj.weight"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;height: 30px; border-right: 2px solid black; border-left: 2px solid black;font-size:18px;">
+                                    From
+                                    <b>
+                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px;"
+                                              t-field="obj.sender_id"/>
+                                    </b>
+                                    <div style="margin-left:90px;font-weight: bold;" class="o_address_format">
+                                        <span style="margin-bottom:3px;" class="o_address_street o_form_field">
+                                            <t t-esc="obj.sender_id.street"/></span>
+                                         <br></br>
+                                        <span style="margin-bottom:3px;" class="o_address_street o_form_field" data-original-title="" title="">
+                                            <t t-esc="obj.sender_id.street2"/>
+                                        </span>
+                                         <br></br>
+                                        <span style="margin-bottom:3px;" class="o_address_city o_form_field" data-original-title="" title="">
+                                            <t t-esc="obj.sender_id.city"/>
+                                        </span>
+                                         <br></br>
+                                        <span style="margin-bottom:3px;" class="o_address_state o_form_field" data-original-title="" title="">
+                                            <t t-esc="obj.sender_id.state_id.name"/>
+                                        </span>
+                                         <br></br>
+                                        <span style="margin-bottom:3px;" class="o_address_zip o_form_field" data-original-title="" title="">
+                                           - <t t-esc="obj.sender_id.zip"/>
+                                        </span>
+                                         <br></br>
+                                        <span style="margin-bottom:3px;" class="o_address_country o_form_field" data-original-title="" title="">
+                                            <t t-esc="obj.sender_id.country_id.name"/>
+                                        </span>
+                                        <br></br>
+                                         <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                              t-field="obj.sender_id.phone"/>
+
+
+
+                                    </div>
+<!--                                    <b>-->
+<!--                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                              t-field="obj.sender_id.street"/>-->
+<!--                                    </b>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                              t-field="obj.sender_id.street2"/>-->
+<!--                                    </b>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                              t-field="obj.sender_id.city"/>-->
+<!--                                    </b>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                              t-field="obj.sender_id.state_id"/>-->
+<!--                                    </b>-->
+<!--                                    <p>-->
+<!--                                        <b>-->
+<!--                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                                  t-field="obj.sender_id.country_id"/>-->
+<!--                                        </b>-->
+<!--                                        <b>-</b>-->
+<!--                                        <b>-->
+<!--                                            <span style="font-size:18px;margin-bottom:3px" t-field="obj.sender_id.zip"/>-->
+<!--                                        </b>-->
+<!--                                    </p>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:18px;padding-left:7%;margin-bottom:3px"-->
+<!--                                              t-field="obj.sender_id.phone"/>-->
+<!--                                    </b>-->
+                                </td>
+                                <td style="width: 15%;height: 30px; border-right: 2px solid black;  font-size:18px;">
+                                    Pick Up date
+                                    <b>
+                                        <span style="font-size:18px;padding-left:5%;" t-field="obj.pickup_date_time"/>
+                                    </b>
+                                </td>
+                                <td style="width: 15%;height: 30px;  border-right: 2px solid black; font-size:18px;">
+                                    Drop off date
+                                    <br/>
+                                    <b>
+                                        <span style="font-size:18px;padding-left:5%;" t-field="obj.deliver_date"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 70%;height: 30px; border-right: 2px solid black; border-left: 2px solid black;font-size:18px;"></td>
+                                <td colspan="2"
+                                    style="width: 15%;height: 30px; border-right: 2px solid black; border-top:2px solid black; font-size:18px; ">
+                                    Pick Up payment detail
+                                    <br/>
+                                    <b>
+                                        <p>
+                                            <b>
+                                                <span style="font-size:18px;padding-left:5%;" t-field="obj.weight"/>
+                                            </b>
+                                            <b style="float:right;font-size:18px">AED</b>
+                                        </p>
+                                    </b>
+                                    <br/>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="width: 70%; border-right: 2px solid black; border-left: 2px solid black;font-size:18px;">
+                                    <br></br>
+                                    <b style="float:right;font-size:18px">ARE</b>
+                                </td>
+                                <td colspan="2"
+                                    style="width: 15%;border-right: 2px solid black;border-top: 2px solid black;   font-size:18px; ">
+                                    Drop off payment detail
+                                    <br></br>
+                                    <br></br>
+                                    <b>
+                                        <p>
+                                            <b>
+                                                <span style="font-size:18px;padding-left:5%;" t-field="obj.weight"/>
+                                            </b>
+                                            <b style="float:right;font-size:18px">AED</b>
+                                        </p>
+                                    </b>
+                                    <br></br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;height:50px; border: 2px solid black;font-size:18px;">To
+                                    <b>
+                                        <span style="font-size:18px;padding-left:7%;" t-field="obj.receiver_id"/>
+                                        <b>
+                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                  t-field="obj.receiver_id.street"/>
+                                        </b>
+                                        <br/>
+                                        <b>
+                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                  t-field="obj.receiver_id.street2"/>
+                                        </b>
+                                        <b>
+                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                  t-field="obj.receiver_id.city"/>
+                                        </b>
+                                        <br/>
+                                        <b>
+                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                  t-field="obj.receiver_id.state_id"/>
+                                        </b>
+                                        <p>
+                                            <b>
+                                                <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                      t-field="obj.receiver_id.country_id"/>
+                                            </b>
+                                            <b>-</b>
+                                            <b>
+                                                <span style="font-size:18px;" t-field="obj.receiver_id.zip"/>
+                                            </b>
+                                        </p>
+                                        <b>
+                                            <span style="font-size:18px;padding-left:7%;margin-bottom:3px"
+                                                  t-field="obj.receiver_id.phone"/>
+                                        </b>
+                                    </b>
+                                    <b style="float:right;font-size:18px;">ARE</b>
+                                </td>
+                                <td colspan="2"
+                                    style="width: 40%;height:50px; border: 2px solid black;font-size:18px; ">Package
+                                    description
+
+                                    <br/>
+                                    <b>
+                                        <p>
+                                            <b>
+                                                <span style="font-size:18px;padding-left:5%;"
+                                                      t-field="obj.product_description"/>
+                                            </b>
+                                        </p>
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+                    </center>
+                    <br/>
+                    <p>
+                        <b>I agree to OneTime Courier terms and conditions at our website www.shipa.com</b>
+                    </p>
+                </t>
+            </div>
+            <!--            </t>-->
+        </t>
+    </template>
+</odoo>

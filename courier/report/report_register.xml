@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="courier.action_courier_challan"
+                string="AirWay Bill"
+                model="courier.courier"
+                report_type="qweb-pdf"
+                name="courier.courier_challan"
+                menu="True"/>
+
+        <record id="paperformat_courier_challanlabel" model="report.paperformat">
+            <field name="name">AirWay Bill Label format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">110</field>
+            <field name="page_width">140</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">13</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">56</field>
+        </record>
+
+
+        <report
+                id="courier.action_courier_challanlabel"
+                string="AirWay Bill Label"
+                model="courier.courier"
+                report_type="qweb-pdf"
+                name="courier.label_57x35"
+                menu="True"/>
+            <record id="courier.action_courier_challanlabel" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="courier.paperformat_courier_challanlabel"/>
+        </record>
+
+        <record id="paperformat_courier_challan" model="report.paperformat">
+            <field name="name">AirWay Bill</field>
+            <field name="default" eval="True"/>
+            <field name="format">A5</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">7</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="courier.action_courier_challan" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="courier.paperformat_courier_challan"/>
+        </record>
+
+
+
+        <report
+                id="courier.action_report_courier"
+                string="Courier Receipt"
+                model="courier.courier"
+                report_type="qweb-pdf"
+                name="courier.courier_receipt"
+                menu="True"/>
+
+        <record id="paperformat_courier_report" model="report.paperformat">
+            <field name="name">Courier Receipt</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="courier.action_report_courier" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="courier.paperformat_courier_report"/>
+        </record>
+    </data>
+</odoo>

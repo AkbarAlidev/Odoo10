@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <template id="courier_booking_menu" name="Booking Courier" customize_show="True" inherit_id="website.layout">
+        <xpath expr="//ul[@id='top_menu']/li[@class='divider']" position="before">
+            <t t-if="request.session.uid">
+                <li>
+                    <a href="/page/booking_page">
+                        <span>Booking Courier</span>
+                    </a>
+                </li>
+            </t>
+            <t t-if="request.session.uid">
+                <li>
+                    <a href="/page/transaction">
+                        <span>My Transaction</span>
+                    </a>
+                </li>
+            </t>
+             <t t-if="request.session.uid">
+                <li>
+                    <a href="/page/booking/import">
+                        <span>Bulk Import Courier</span>
+                    </a>
+                </li>
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_line_tresse" model="ir.ui.view">
+        <field name="name">account.invoice.line.tree</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="replace">
+                <field name="uom_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    <record id="view_res_partner_custom" model="ir.ui.view">-->
+    <!--        <field name="name">res.partner.custom</field>-->
+    <!--        <field name="model">res.partner</field>-->
+    <!--        <field name="inherit_id" ref="account.view_invoice_line_tree"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//sheet" position="inside">-->
+    <!--                  <div class="oe_button_box" name="button_box">-->
+    <!--                       <button type="object" class="oe_stat_button" string="Give Portal Access" name="create_portal_user"-->
+    <!--                         icon='fa-code'/>-->
+    <!--                    </div>-->
+
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <record id="res_partner_customer_type" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.customer.type</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <field name="is_portal_user" invisible="1"/>
+                <div class="oe_button_box" name="button_box">
+                    <div attrs="{'invisible' : [('is_portal_user', '!=', False)]}">
+                        <button type="object" class="oe_stat_button" string="Give Portal Access"
+                                name="create_portal_user"
+                                icon='fa-check'/>
+                    </div>
+                    <div attrs="{'invisible' : [('is_portal_user', '=', False)]}">
+                        <button type="object" class="oe_stat_button" string="Portal Access"
+                                name="create_portal_user"
+                                icon='fa-check-circle'/>
+                    </div>
+                </div>
+
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="customer_type"/>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="replace">
+                <field name="phone" string="Phone" widget="phone" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="replace">
+                <field name="mobile" string="Mobile" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='company_type']" position="after">
+                <field name="code" attrs="{'readonly':True}"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="code"/>
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position="after">
+
+                <field name="area_id" required="1" placeholder="Area"/>
+                <field name="zone_id" required="1" placeholder="Zone"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

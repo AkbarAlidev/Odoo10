@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sender_account_statement" model="ir.ui.view">
+        <field name="name">Account Statement</field>
+        <field name="model">sender.account.statement</field>
+        <field name="arch" type="xml">
+            <form string="Account Statement">
+                <p class="oe_grey">
+                    Invoices will be created in draft so that you can review
+                    them before validation.
+                </p>
+                <group>
+                    <group>
+                        <field name="sender_id" class="oe_inline"/>
+                        <field name="from_date" class="oe_inline"/>
+                        <field name="to_date" class="oe_inline"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="check_report" string="Create Statement" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_sender_account_statement" model="ir.actions.act_window">
+        <field name="name">Sender Account Statement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sender.account.statement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_courier_report" name="Report" parent="main_menu_courier" sequence="4"/>
+    <menuitem id="menu_courier_report_account_statement" action="action_view_sender_account_statement"
+              parent="menu_courier_report" sequence="1"/>
+</odoo>

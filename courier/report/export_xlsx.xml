@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="export_xlsx"
+            model="courier.courier"
+            string="Print Export report"
+            report_type="xlsx"
+            name="courier.courier.xlsx"
+            file="courier.courier.xlsx"
+            attachment_use="False"
+            menu="False"
+        />
+    </data>
+</odoo>

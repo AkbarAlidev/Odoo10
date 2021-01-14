@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="courier.report_invoice_custom"
+                string="Invoice Report"
+                model="account.invoice"
+                report_type="qweb-pdf"
+                name="courier.report_invoice"
+                file ="courier.report_invoice"
+                menu="True"/>
+
+
+             <record id="paperformat_invoice_report" model="report.paperformat">
+            <field name="name">Invoice Report</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">90</field>
+        </record>
+
+      <record id="courier.report_invoice_custom" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="courier.paperformat_invoice_report"/>
+        </record>
+
+
+        <template id="courier.report_invoice">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="obj">
+                    <div class="header" style="display: -webkit-box; justify-content: space-between;">
+                        <img t-if="res_company.logo" t-att-src="'data:image/png;base64,%s' %res_company.logo"/>
+                       <div style="margin-left:420px; text-align:right;">
+                               <t t-esc="res_company.street"></t><br></br>
+                               <t t-esc="res_company.street2"></t><br></br>
+                               <t t-esc="res_company.city"></t>
+                               <t t-esc="res_company.state_id.name"></t><br></br>
+                               <t t-esc="res_company.country_id.name"></t>
+                               <t t-esc="res_company.zip"></t><br></br>
+                               <t t-esc="res_company.phone"></t>
+                       </div>
+                    </div>
+                <div class="page" style="margin-top:100px;">
+                    <section style="text-align: center; color: brown;">
+                <h1>TAX INVOICE</h1>
+        </section>
+        <section style="display: -webkit-box; justify-content: space-between;">
+                <div style="border: 1px solid black; width: 40%; height: 150px; padding: 10px;">
+                        <p style="margin-top: 0;"><b><t t-esc="obj.partner_id.name"></t></b></p>
+                        <p style="margin-top: -5px;"><b>VAT TRN:</b></p>
+                        <p style="margin-top: -9px;"><t t-esc="obj.partner_id.street"></t></p>
+                        <p style="margin-top: -9px;"><t t-esc="obj.partner_id.street2"></t></p>
+                        <p style="margin-top: -9px;"><t t-esc="obj.partner_id.city"></t><t t-esc="obj.partner_id.state_id.name"></t></p>
+                        <p style="margin-top: -9px;"><t t-esc="obj.partner_id.country_id.name"></t><t t-esc="obj.partner_id.zip"></t> <t t-esc="obj.partner_id.phone"></t></p>
+                </div>
+                <div style="margin-left:200px;">
+                        <table style="background-color: d6d6d6; border-collapse: collapse;">
+                                <tr>
+                                        <th style="border: 1px solid black; background-color: #d6d6d6; padding: 10px; border-top-left-radius: 5px;">
+                                                ACCOUNT NO
+                                        </th>
+                                        <th style="border: 1px solid black; background-color: #d6d6d6; padding: 10px;">
+                                                INVOICE DATE
+                                        </th>
+                                        <th style="border: 1px solid black; background-color: #d6d6d6; padding: 10px; border-top-right-radius: 5px;">
+                                                INVOICE NO
+                                        </th>
+                                </tr>
+                                <tr>
+                                        <td style="border: 1px solid black; background-color: #d6d6d6; padding:20px 10px; text-align:center; align-items:center; border-bottom-left-radius: 5px;">
+                                                <p><t t-esc="obj.partner_id.name"></t></p>
+                                        </td>
+                                        <td style="border: 1px solid black; background-color: #d6d6d6; padding-top: 20px; padding-bottom: 20px; text-align:center; align-items:center;">
+                                            <p><t t-esc="obj.date_invoice"></t></p>
+                                        </td>
+                                        <td style="border: 1px solid black; background-color: #d6d6d6; padding-top: 20px; padding-bottom: 20px; text-align:center; align-items:center; border-bottom-left-radius: 5px;">
+                                            <p><t t-esc="obj.number"></t></p>
+                                        </td>
+                                </tr>
+                        </table>
+                    <P style="margin-top:10px;"><b>VAT TRN : <t t-esc="res_company.vat"></t></b></P>
+                </div>
+        </section>
+        <section style="padding: 10px;">
+                <table style="border-collapse: collapse; width: 100%;">
+                        <tr>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Sl. No
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Date
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        AWB No
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Origin
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Consignee
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Destination
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Product
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Weight
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Pieces
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Amount
+                                </td>
+                                <td style="padding: 7px; border-top: 1px solid; border-bottom: 1px solid; text-align: left;">
+                                        Vat
+                                </td>
+                        </tr>
+                        <tr t-foreach="obj.invoice_line_ids" t-as="l">
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><span t-esc="l_index + 1"></span></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><span t-field="obj.date" t-field-options='{"widget": "date"}'></span></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                       <p><t t-esc="l.name"></t> </p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><t t-esc="obj.partner_id.country_id.name"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                       <p><t t-esc="obj.receiever.name"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><t t-esc="obj.destination.name"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><t t-esc="l.product_id.name"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><t t-esc="l.weight"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                       <p><t t-esc="l.quantity"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                        <p><t t-esc="l.price_unit"></t></p>
+                                </td>
+                                <td style="padding-top: 40px; padding-bottom: 40px; text-align: right;">
+                                        <p><span t-esc="', '.join(map(lambda x: (x.description or x.name), l.invoice_line_tax_ids))"/></p>
+                                </td>
+                        </tr>
+                </table>
+            <div style="border-top: 2px solid black"></div>
+        </section>
+        <section style="display: -webkit-box; justify-content: space-between;">
+                <div style="margin-left: 30px;">
+                    <p><b>AED:-<span t-esc="obj.numtoword_s(obj.amount_total)"/></b></p>
+                </div>
+                <div style="margin-left: 450px;">
+                        <table>
+                                <tr>
+                                        <td style="text-align: right;">
+                                            <p> Total </p>
+                                        </td>
+                                        <td style="text-align: right; padding-left: 100px;">
+                                                <p><span t-field="obj.amount_untaxed" t-options='{"widget": "monetary", "display_currency": obj.currency_id}'/></p>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td style="text-align: right;">
+                                            <p>Other charges</p>
+                                        </td>
+                                        <td style="text-align: right;">
+                                                <p>0.00</p>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td style="text-align: right;">
+                                                <p>*Fuel surcharge @$0.00%</p>
+                                        </td>
+                                        <td style="text-align: right;">
+                                                <p>0.00</p>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td style="text-align: right;">
+                                                <p>Admin Charges</p>
+                                        </td>
+                                        <td style="text-align: right;">
+                                                <p>0.00</p>
+                                        </td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                        <td style="text-align: right;">-->
+<!--                                                <p>VAT</p>-->
+<!--                                        </td>-->
+<!--                                        <td style="text-align: right;">-->
+<!--                                                <p>0.00</p>-->
+<!--                                        </td>-->
+<!--                                </tr>-->
+                            <t t-foreach="obj._get_tax_amount_by_group()" t-as="amount_by_group">
+                            <tr>
+                                <td style="text-align: right;"><span t-esc="amount_by_group[0] if len(obj.tax_line_ids) > 1 else (obj.tax_line_ids.tax_id.description or o.tax_line_ids.tax_id.name)"/></td>
+                                <td style="text-align: right;">
+                                    <span t-esc="amount_by_group[2]"/>
+                                </td>
+                            </tr>
+                        </t>
+                                <tr>
+                                        <td style="text-align: right; align-items:center; padding-top:6px;">
+                                                <p>Net Total</p>
+                                        </td>
+                                        <td style="text-align: right; border-top: 2px solid black; border-bottom: 2px solid black; align-items:center; padding-top:6px;">
+                                                <p><span t-field="obj.amount_total" t-options='{"widget": "monetary", "display_currency": obj.currency_id}'/></p>
+                                        </td>
+                                </tr>
+                        </table>
+                </div>
+        </section>
+        <section style="margin: 25px;">
+                <p><b>For Arman express</b></p>
+                <p>The above balance will be considerd correct
+                        if any discrepancy not notified within
+                        7 days from the date of Invoice</p>
+                <p>Payment should be made in cash or Cheuque favouring <b>"Gateway Line L.L.C"</b></p>
+                <p>This is a system generated invoice and does not require signature</p>
+                <p><b>*Fuel surcharge per shipment applies. Fuel surcharge is based on the monthly average spot prices for kerosene/jet fuel (Rotterdam ARA)</b></p>
+        </section>
+        <hr></hr>
+
+                </div>
+            </t>
+            </t>
+
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="courier.courier_receipt">
+        <style>
+            table, th, td {
+            border: 1px solid black;
+            }
+        </style>
+        <t t-call="report.html_container">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="obj">
+                        <table width="100%">
+                            <tr>
+                                <h3>Courier Receipt</h3>
+                            </tr>
+                            <tr>
+                                <td width="33%">
+                                    <b>
+                                        <span t-field="obj.sender_id.name"/>
+                                        <br/>
+                                    </b>
+                                    <span t-if="obj.sender_id.street">
+                                        <span t-field="obj.sender_id.street"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.sender_id.street2">
+                                        <span t-field="obj.sender_id.street2"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.sender_id.city">
+                                        <span t-field="obj.sender_id.city"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.sender_id.state_id">
+                                        <span t-field="obj.sender_id.state_id.code"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.sender_id.zip">
+                                        <span t-field="obj.sender_id.zip"/>
+                                        <br/>
+                                    </span>
+                                </td>
+                                <td width="33%">
+
+                                </td>
+                                <td width="33%">
+                                    <b>
+                                        <span t-field="obj.receiver_id.name"/>
+                                        <br/>
+                                    </b>
+                                    <span t-if="obj.sender_id.street">
+                                        <span t-field="obj.receiver_id.street"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.receiver_id.street2">
+                                        <span t-field="obj.receiver_id.street2"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.receiver_id.city">
+                                        <span t-field="obj.receiver_id.city"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.receiver_id.state_id">
+                                        <span t-field="obj.receiver_id.state_id.code"/>
+                                        <br/>
+                                    </span>
+                                    <span t-if="obj.receiver_id.zip">
+                                        <span t-field="obj.receiver_id.zip"/>
+                                        <br/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <table width="100%" class="table">
+                            <tr>
+                                <td>
+                                    <b>Courier Number</b>
+                                </td>
+                                <td align="left">
+                                    <span t-field="obj.number"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Tracking Reference</b>
+                                </td>
+                                <td align="left">
+                                    <span t-field="obj.track_ref"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Delivery Method</b>
+                                </td>
+                                <td>
+                                    <span t-field="obj.delivery_carrier_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Source Location</b>
+                                </td>
+                                <td>
+                                    <span t-field="obj.routing_id.from_location_id.city"/>
+                                    <span t-field="obj.routing_id.from_location_id.zip"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Destination Location</b>
+                                </td>
+                                <td>
+                                    <span t-field="obj.routing_id.to_location_id.city"/>
+                                    <span t-field="obj.routing_id.to_location_id.zip"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Price</b>
+                                </td>
+                                <td>
+                                    <span t-field="obj.price"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Estimated Delivery Date</b>
+                                </td>
+                                <td>
+                                    <span t-field="obj.deliver_date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="page-break-before:always;">
+                        </p>
+                        <div>
+                            <b>
+                                <span>Courier Terms &amp; Condition</span>
+                            </b>
+                            <br/>
+                            <span t-esc="obj.terms_id.description"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div>
+                            <b>
+                                <span>Company Terms &amp; Condition</span>
+                            </b>
+                            <br/>
+                            <span t-raw="obj.company_id.terms_condition"/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

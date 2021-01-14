@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assing_driver_form" model="ir.ui.view">
+        <field name="name">Assign Driver</field>
+        <field name="model">courier.assign.driver.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign Driver">
+                <p class="oe_grey">
+                    Assign Driver to Delivery.
+                </p>
+                <group>
+                    <group>
+                        <field name="assign_to" domain="[('is_driver','=',True)]" class="oe_inline"/>
+
+                    </group>
+                </group>
+                <footer>
+                    <button name="update_driver_courier" string="Assign Driver" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

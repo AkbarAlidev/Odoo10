@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence number for Customer -->
+        <record id="seq_number_for_customer" model="ir.sequence">
+            <field name="name">Code</field>
+            <field name="code">res.partner.code</field>
+            <field name="prefix">C</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <record id="seq_track_courier" model="ir.sequence">
+            <field name="name">Tracking Number</field>
+            <field name="code">courier.tracking</field>
+            <field name="prefix">TRACK/%(range_year)s/</field>
+            <field name="padding">5</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,1322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Booking Courier">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/courier/static/src/css/courier_css.css"/>
+
+            <script type="text/javascript" src="/courier/static/src/js/booking_form.js"/>
+        </xpath>
+    </template>
+
+    <template id="booking_form" name="Booking">
+        <t t-call="website.layout">
+            <form class="booking-form" action="/admission_form/creation/" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+            </form>
+        </t>
+    </template>
+    <template id="portal_detail_view">
+        <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div id="portal_popup" class="modal-content" style="max-width: 85%!important; width: 100%!important;">
+                    <div class="modal-header">
+                        <form action="/create/partner">
+                            <div style="">
+                                <h4 class="sp-book_title"
+                                    style="align-content: ;/*! margin: 7px; */margin-top: 6px;margin-left: 6px;">
+
+                                </h4>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-body" style="margin-left:30px;">
+                        <div class="row">
+                            <label>Name
+                                <span style="color:red">*</span>
+                            </label>
+
+                            <input id="name" required="1" name="name"
+                                   style="margin-bottom: 10px;line-height: 2;width:33%"
+                                   type="text"/>
+                            <label>Phone
+                                <span style="color:red">*</span>
+                            </label>
+
+                            <input id="phone" required="1" name="phone"
+                                   style="margin-bottom: 10px;line-height: 2;width:29%"
+                                   type="text"/>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <label>Address
+                                <span style="color:red">*</span>
+                            </label>
+                            <div style="width: 100%;" class="o_address_format">
+                                <input style="display: flex;width: 80%;margin-bottom: 10px;line-height: 2;"
+                                       required="1" class="o_form_input o_address_street o_form_field" id="street"
+                                       placeholder="Street..." name="street" type="text"/>
+                                <input style="width: 80%;margin-bottom: 10px;line-height: 2;" id="street2"
+                                       class="o_form_input o_address_street o_form_field" placeholder="Street 2..."
+                                       type="text" name="street2" data-original-title="" title=""/>
+                                <br/>
+                                <div class="row">
+                                    <input style="width:25%;margin-bottom: 10px;line-height: 2;margin-left:13px"
+                                           required="1" class="o_form_input o_address_city o_form_field"
+                                           placeholder="City"
+                                           type="text" name="city" id="city"
+                                           data-original-title="" title=""/>
+
+                                    <select style="width: 25%;margin-bottom: 10px;height:40px;"
+                                            name="state_id" id="state_id"
+                                            required="1" class="o_form_input o_address_state o_form_field"
+                                            placeholder="State"
+                                            type="text" data-original-title="" title="">
+                                        <option>State</option>
+                                        <t t-foreach="state_ids or []" t-as="state_ids">
+                                            <option t-att-value="state_ids.id">
+                                                <t t-esc="state_ids.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                    <input style="width:26%;margin-bottom: 10px;line-height: 2;"
+                                           required="1" class="o_form_input o_address_city o_form_field"
+                                           placeholder="zip"
+                                           type="text" id="zip"
+                                           name="zip"
+                                           data-original-title="" title=""/>
+                                </div>
+                                <div class="row">
+                                    <select style="width: 25%;margin-bottom: 10px;margin-left: 13px;height:40px;"
+                                            name="area_id" id="area_id" required="1"
+                                            class="o_form_input o_address_state o_form_field" placeholder="Area"
+                                            type="text" data-original-title="" title="">
+                                        <option>Area</option>
+                                        <t t-foreach="area_ids or []" t-as="area_id">
+                                            <option t-att-value="area_id.id"
+                                                    t-attf-zone_id="#{area_id.zone_id.id}">
+                                                <t t-esc="area_id.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                    <select style="width: 52%;margin-bottom: 10px;height:40px;"
+                                            name="country_id" id="country_id"
+                                            class="o_form_input o_address_country o_form_field" placeholder="Country"
+                                            type="text" data-original-title="" title="">
+                                        <option></option>
+                                        <t t-foreach="country_ids or []" t-as="country_id">
+                                            <option t-att-value="country_id.id">
+                                                <t t-esc="country_id.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div style="float: right;margin-bottom: 7px;margin-right: 7px;">
+                            <button type="button" class="btn view_detail close_dpopup btn-default">Cancel</button>
+                            <button type="button" class="btn view_detail submit_cpopup btn-danger">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="address_detail_view">
+        <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div id="portal_popup" class="modal-content" style="max-width: 85%!important; width: 100%!important;">
+                    <form id="address_detail_view">
+                        <div class="modal-body" style="margin-left:30px;">
+
+                            <div class="row">
+                                <label>Address
+                                    <span style="color:red">*</span>
+                                </label>
+                                <div style="width: 100%;" class="o_address_format">
+                                    <input style="display: flex;width: 80%;margin-bottom: 10px;line-height: 2;"
+                                           required="1"
+                                           class="o_form_input o_address_street o_form_field" id="street"
+                                           placeholder="Street..." name="street" type="text"/>
+                                    <input style="width: 80%;margin-bottom: 10px;line-height: 2;" id="street2"
+                                           class="o_form_input o_address_street o_form_field" placeholder="Street 2..."
+                                           type="text" name="street2" required="1"/>
+                                    <br/>
+                                    <div class="row">
+                                        <input style="width:25%;margin-bottom: 10px;line-height: 2;margin-left:13px"
+                                               required="1" class="o_form_input o_address_city o_form_field"
+                                               placeholder="City"
+                                               type="text" name="city" id="city"
+                                               data-original-title="" title=""/>
+
+                                        <select style="width: 25%;margin-bottom: 10px;height:40px;"
+                                                name="state_id" id="state_id" required="1"
+                                                class="o_form_input o_address_state o_form_field" placeholder="State"
+                                                type="text" data-original-title="" title="">
+                                            <option>State</option>
+                                            <t t-foreach="state_ids or []" t-as="state_ids">
+                                                <option t-att-value="state_ids.id">
+                                                    <t t-esc="state_ids.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                        <input style="width:26%;margin-bottom: 10px;line-height: 2;"
+                                               required="1" class="o_form_input o_address_city o_form_field"
+                                               placeholder="zip"
+                                               type="text" id="zip"
+                                               name="zip"
+                                               data-original-title="" title=""/>
+                                    </div>
+                                    <div class="row">
+                                        <select style="width: 25%;margin-bottom: 10px;margin-left: 13px;height:40px;"
+                                                name="sender_area_id" id="area_id" required="1"
+                                                class="o_form_input o_address_state o_form_field" placeholder="Area"
+                                                type="text" data-original-title="" title="">
+                                            <option>Area</option>
+                                            <t t-foreach="area_ids or []" t-as="area_id">
+                                                <option t-att-value="area_id.id"
+                                                        t-attf-zone_id="#{area_id.zone_id.id}">
+                                                    <t t-esc="area_id.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+
+                                        <select style="width: 52%;margin-bottom: 10px;height:40px;" required="1"
+                                                name="country_id" id="country_id"
+                                                class="o_form_input o_address_country o_form_field"
+                                                placeholder="Country"
+                                                type="text" data-original-title="" title="">
+                                            <option></option>
+                                            <t t-foreach="country_ids or []" t-as="country_id">
+                                                <option t-att-value="country_id.id">
+                                                    <t t-esc="country_id.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <div style="float: right;margin-bottom: 7px;margin-right: 7px;">
+                            <button type="button" class="btn view_detail close_dpopup btn-default">Cancel</button>
+                            <button type="button" class="btn view_detail submit_cpopup btn-danger">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="add_area_view">
+        <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div id="area_popup" class="modal-content" style="max-width: 85%!important; width: 100%!important;">
+                    <form id="address_detail_view">
+                        <div class="modal-body" style="margin-left:30px;">
+
+                            <div class="row">
+                                <label>Area
+                                    <span style="color:red">*</span>
+                                </label>
+                                <div style="width: 100%;" class="o_address_format">
+                                    <input style="display: flex;width: 80%;margin-bottom: 10px;line-height: 2;"
+                                           required="1"
+                                           class="o_form_input o_address_street o_form_field"
+                                           placeholder="Area..." name="area" id="area" type="text"/>
+                                    <select style="width: 52%;margin-bottom: 10px;height:40px;" required="1"
+                                            name="zone_id" id="zone_id"
+                                            class="o_form_input o_address_country o_form_field"
+                                            placeholder="Zone"
+                                            type="text" data-original-title="" title="">
+                                        <option></option>
+                                        <t t-foreach="zone_ids or []" t-as="zone_id">
+                                            <option t-att-value="zone_id.id">
+                                                <t t-esc="zone_id.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <div style="float: right;margin-bottom: 7px;margin-right: 7px;">
+                            <button type="button" class="btn view_detail close_dpopup btn-default">Cancel</button>
+                            <button type="button" class="btn view_detail submit_cpopup btn-danger">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="booking_level" name="Booking">
+        <t t-call="website.layout">
+            <form class="booking-level" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div>
+                    <div class="display_felx">
+                        <select name="booking_level" required="1" id="sender_id"
+                                class="form-control">
+                            <option selected="1" value="domestic_delivery">DOMESTIC DELIVERY</option>
+                            <option value="international_delivery">INTERNATIONAL DELIVERY</option>
+                        </select>
+                    </div>
+
+                </div>
+            </form>
+        </t>
+    </template>
+    <template id="booking_courier" name="Booking Courier" page="True">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="col-sm-12 courier_main">
+                    <div class="book_bg_img">
+                        <br/>
+                        <br/>
+                        <center>
+                            <span class="wlc">Welcome to</span>
+                            <br></br>
+                            <span class="company_name" t-esc="request.env.user.company_id.name"/>
+                            <br></br>
+                            <span class="tagline">Book your courier</span>
+                        </center>
+                        <br/>
+                        <form id="courier_booking" action="/page/booking_page/create" method="post"
+                              data-model_name="courier.courier"
+                              data-success_page="/page/booking_page/success"
+                              class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="col-lg-12" >
+                                <input type="radio" id="domestic_delivery" class="booking_level" selected="1"
+                                       name="booking_level" checked="checked" value="domestic_delivery"/>
+                                <label for="male">DOMESTIC DELIVERY</label>
+
+                                <input type="radio" id="international_delivery" class="booking_level"
+                                       name="booking_level" value="international_delivery"/>
+                                <label for="female">INTERNATIONAL DELIVERY</label>
+
+                            </div>
+                            <br></br>
+
+                            <section>
+                                <h3 class="cb-h3">Sender Details</h3>
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="sender_id">Name
+                                            <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-md-7 col-sm-8 ">
+                                            <div class="display_felx">
+                                                <select name="sender_id" required="1" id="sender_id"
+                                                        class="partner form-control add_new">
+                                                    <option disabled="1" selected="1" value="">Sender name...</option>
+
+                                                    <t t-foreach="sender_ids or []" t-as="sender_id">
+                                                        <option t-attf-street="#{sender_id.street}"
+                                                                t-attf-street2="#{sender_id.street2}"
+                                                                t-attf-city="#{sender_id.city}"
+                                                                t-attf-area_id="#{sender_id.area_id}"
+                                                                t-attf-state_id="#{sender_id.state_id}"
+                                                                t-attf-zip="#{sender_id.zip}"
+                                                                t-attf-country_id="#{sender_id.country_id}"
+                                                                t-att-value="sender_id.id">
+                                                            <t t-esc="sender_id.name"/>
+                                                        </option>
+                                                    </t>
+
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default add_partner"
+                                                            t-attf-record_id="sender_id" id="senderr_partner"
+                                                            type="button" tabindex="-1">
+                                                        <span aria-hidden="true"
+                                                              class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <span class="hide erro_msg sender_span">Please Choose Sender</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Street
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_street o_form_field"
+                                                   id="sender_street"
+                                                   placeholder="Street..." name="street" type="text"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Street2
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_street o_form_field"
+                                                   id="sender_street2"
+                                                   placeholder="Street2..." name="street2" type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">City
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" id="sender_city" style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_city o_form_field" placeholder="City"
+                                                   type="text" name="sender_city"
+                                                   data-original-title="" title=""/>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">State
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select class="form-control" id="sender_state_id" required="1"
+                                                    style="margin-bottom: 10px;"
+                                                    name="sender_state_id"
+                                                    placeholder="State"
+                                                    type="text" data-original-title="" title="">
+
+                                                <option disabled="1" selected="1" value="">State...</option>
+                                                <t t-foreach="state_ids or []" t-as="state_id">
+                                                    <option t-att-value="state_id.id">
+                                                        <t t-esc="state_id.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Zip
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" id="sender_zip" style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_city o_form_field" placeholder="Zip"
+                                                   type="text" name="sender_zip"
+                                                   data-original-title="" title=""/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                                     <div class="form-group col-lg-4 form-field o_website_form_required_custom">-->
+                                <!--                                    -->
+                                <!--                                     </div>-->
+
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Area
+                                            <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-md-7 col-sm-8">
+                                            <div class="areadiv display_felx">
+                                                <select class="form-control" id="sender_area_id" required="1"
+                                                        style="margin-bottom: 10px;"
+                                                        name="sender_area_id"
+                                                        placeholder="Area"
+                                                        type="text" data-original-title="" title="">
+                                                    <option disabled="1" selected="1" value="">Area...</option>
+                                                    <t t-foreach="area_ids or []" t-as="area_id">
+                                                        <option t-att-value="area_id.id"
+                                                                t-attf-zone_id="#{area_id.zone_id.id}">
+                                                            <t t-esc="area_id.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                                <span class="hide dynamic_area input-group-btn">
+                                                    <button class="btn btn-default add_area"
+                                                            id="add_area"
+                                                            type="button" tabindex="-1">Add
+                                                        <span aria-hidden="true"
+                                                              class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="col-md-7 col-sm-8" syle="display: inline-flex;">-->
+
+                                    <!--                                        <input id="sender_zone_id" type="type" style="line-height: 23px;width: 40%;"-->
+                                    <!--                                               name="sender_zone_id"/>-->
+                                    <!--                                    </div>-->
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Country
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select id="sender_country_id" class="form-control country" required="1"
+                                                    name="sender_country_id"
+                                                    placeholder="Country"
+                                                    type="text" data-original-title="" title="">
+                                                <option disabled="1" selected="1" value="">Country...</option>
+                                                <t t-foreach="country_ids or []" t-as="country_id">
+                                                    <option t-att-value="country_id.id">
+                                                        <t t-esc="country_id.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <h3 class="cb-h3">Receiver Details</h3>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom ">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="sender_id">Name
+                                            <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-md-7 col-sm-8 ">
+                                            <div class="display_felx">
+                                                <select name="receiver_id" required="1" id="receiver_id"
+                                                        class="partner form-control add_new">
+                                                    <option disabled="1" selected="1" value="">Receiver name...</option>
+
+                                                    <t t-foreach="sender_ids or []" t-as="sender_id">
+                                                        <option t-attf-street="#{sender_id.street}"
+                                                                t-attf-street2="#{sender_id.street2}"
+                                                                t-attf-city="#{sender_id.city}"
+                                                                t-attf-area_id="#{sender_id.area_id}"
+                                                                t-attf-state_id="#{sender_id.state_id}"
+                                                                t-attf-country_id="#{sender_id.country_id}"
+                                                                t-att-value="sender_id.id">
+                                                            <t t-esc="sender_id.name"/>
+                                                        </option>
+                                                    </t>
+
+                                                </select>
+                                                <span class=" input-group-btn">
+                                                    <button class="btn btn-default add_partner"
+                                                            t-attf-record_id="receiver_id" id="receiver_partner"
+                                                            type="button" tabindex="-1">
+                                                        <span aria-hidden="true"
+                                                              class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <span class="hide erro_msg receiver_span">Please Choose Receiver</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Street
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_street o_form_field"
+                                                   id="receiver_street"
+                                                   placeholder="Street..." name="receiver_street" type="text"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Street2
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_street o_form_field"
+                                                   id="receiver_street2"
+                                                   placeholder="Street2..." name="receiver_street2" type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">City
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" style="line-height: 23px;width: 99%;" id="receiver_city"
+                                                   class="o_form_input o_address_city o_form_field" placeholder="City"
+                                                   type="text" name="receiver_city"
+                                                   data-original-title="" title=""/>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">State
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select class="form-control" required="1" id="receiver_state_id"
+                                                    style="margin-bottom: 10px;"
+                                                    name="receiver_state_id"
+                                                    placeholder="State"
+                                                    type="text" data-original-title="" title="">
+                                                <option disabled="1" selected="1" value="">State...</option>
+                                                <t t-foreach="state_ids or []" t-as="state_id">
+                                                    <option t-att-value="state_id.id">
+                                                        <t t-esc="state_id.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="receiver_zip">Zip
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input id="receiver_zip" required="1" style="line-height: 23px;width: 99%;"
+                                                   class="o_form_input o_address_city o_form_field" placeholder="Zip"
+                                                   type="text" name="receiver_zip"
+                                                   data-original-title="" title=""/>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Area
+                                            <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-md-7 col-sm-8">
+                                            <div class="areadiv display_felx">
+                                                <select class="form-control" id="receiver_area_id" required="1"
+                                                        style="margin-bottom: 10px;"
+                                                        name="receiver_area_id"
+                                                        placeholder="Area"
+                                                        type="text" data-original-title="" title="">
+                                                    <option disabled="1" selected="1" value="">Area...</option>
+                                                    <t t-foreach="area_ids or []" t-as="area_id">
+                                                        <option t-att-value="area_id.id"
+                                                                t-attf-zone_id="#{area_id.zone_id.id}">
+                                                            <t t-esc="area_id.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <span class="hide dynamic_area input-group-btn">
+                                                <button class="btn btn-default add_area"
+                                                        t-attf-record_id="receiver_id" id="receiver_partner"
+                                                        type="button" tabindex="-1">
+                                                    <span aria-hidden="true"
+                                                          class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="col-md-7 col-sm-8" syle="display: inline-flex;">-->
+
+                                    <!--                                        <input id="receiver_zone_id" type="type" style="line-height: 23px;width: 40%;"-->
+                                    <!--                                               name="receiver_zone_id"/>-->
+                                    <!--                                    </div>-->
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;">Country
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select class="form-control country" id="receiver_country_id" required="1"
+                                                    name="receiver_country_id"
+                                                    placeholder="Country"
+                                                    type="text" data-original-title="" title="">
+                                                <option disabled="1" selected="1" value="">Country...</option>
+                                                <t t-foreach="country_ids or []" t-as="country_id">
+                                                    <option t-att-value="country_id.id">
+                                                        <t t-esc="country_id.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                            <select class="form-control hide hidden_country" name="receiver_country_id"
+                                                    placeholder="Country"
+                                                    type="text" data-original-title="" title="">
+                                                <option disabled="1" selected="1" value="">Country...</option>
+                                                <t t-foreach="country_ids or []" t-as="country_id">
+                                                    <option t-att-value="country_id.id">
+                                                        <t t-esc="country_id.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </section>
+                            <section>
+                                <h3 class="cb-h3">Courier Details</h3>
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Courier Type
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select required="1" name="courier_type_id" id="courier_type_id"
+                                                    class="form-control">
+                                                <option value="">Courier Type...</option>
+                                                <t t-foreach="courier_types or []" t-as="courier_type">
+                                                    <option t-att-value="courier_type.id">
+                                                        <t t-esc="courier_type.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Service Type
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select name="service_type" required="1" id="service_type"
+                                                    class="form-control">
+                                                <option value="">Service Type...</option>
+                                                <option value="door_to_door">
+                                                    <t t-esc="'Door to door'"/>
+                                                </option>
+                                                <option value="clearance_by_consignee">
+                                                    <t t-esc="'Clearance by consignee/IKA Airport'"/>
+                                                </option>
+<!--                                                <option value="return_service">-->
+<!--                                                    <t t-esc="'Return Service(RTS)'"/>-->
+<!--                                                </option>-->
+<!--                                                <option value="cod_ecommerce_shipments">-->
+<!--                                                    <t t-esc="'COD E-commerce Shipments'"/>-->
+<!--                                                </option>-->
+<!--                                                <option value="internal_outbond_express">-->
+<!--                                                    <t t-esc="'International OutBond Express'"/>-->
+<!--                                                </option>-->
+
+                                                <!--                                        </t>-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Courier Method
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select required="1" name="courier_method" id="courier_method"
+                                                    class="form-control">
+                                                <option value="">Courier Method...</option>
+                                                <option value="delivery">
+                                                    <t t-esc="'Delivery'"/>
+                                                </option>
+                                                <option value="pickup_and_delivery">
+                                                    <t t-esc="'Pickup &amp; Delivery'"/>
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="delivered_by">Delivered By
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select required="1" name="delivered_by" id="delivered_by"
+                                                    class="form-control">
+                                                <option value="">Delivered By</option>
+                                                <option value="by_bike">
+                                                    <t t-esc="'By Bike'"/>
+                                                </option>
+                                                <option value="by_car">
+                                                    <t t-esc="'By Car'"/>
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">PickUp Date &amp;
+                                            Time
+                                            <span class="pickup_datediv" style="color:red">*</span>
+                                        </label>
+                                        <div style="display: inline-flex;" class="col-md-7 col-sm-8">
+
+                                            <input id="pickupdate" type="date" name="pickup_date"/>
+
+                                            <input id="pickuptime" style="width: 168px;" value="00:00 am"
+                                                   placeholder="00:00 am" type="time"
+                                                   name="pickup_time"/>
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">PickUp Location
+                                            <span class="pickup_locationdiv hide" style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8 display_felx">
+                                            <select name="pickup_location_id" id="pickup_location_id"
+                                                    class="form-control add_new">
+                                                <option disabled="1" value="" selected="1">PickUp Location..</option>
+
+                                                <t t-foreach="location_list or []" t-as="location_id">
+                                                    <option t-attf-partner_id="#{location_id.partner_id.id}"
+                                                            t-att-value="location_id.id">
+                                                        <div class="o_address_format">
+                                                            <span class="o_address_street o_form_field o_form_required">
+                                                                <t t-esc="location_id.street"/>,
+                                                            </span>
+                                                            <span class="o_address_street o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.street2"/>,
+                                                            </span>
+                                                            <span class="o_address_city o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.city"/>,
+                                                            </span>
+                                                            <span class="o_address_state o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.state_id.name"/>,
+                                                            </span>
+                                                            <span class="o_address_zip o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.zip"/>,
+                                                            </span>
+                                                            <span class="o_address_country o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.country_id.name"/>,
+                                                            </span>
+                                                        </div>
+
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default add_location"
+                                                        t-attf-record_id="receiver_id" id="receiver_partner"
+                                                        type="button" tabindex="-1">
+                                                    <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <select id="hide_location_list" name="pickup_location_id2" style="display:none;"
+                                                    class="form-control">
+
+                                                <t t-foreach="location_list or []" t-as="location_id">
+                                                    <option t-attf-partner_id="#{location_id.partner_id.id}"
+                                                            t-att-value="location_id.id">
+                                                        <div class="o_address_format">
+                                                            <span class="o_address_street o_form_field o_form_required">
+                                                                <t t-esc="location_id.street"/>,
+                                                            </span>
+                                                            <span class="o_address_street o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.street2"/>,
+                                                            </span>
+                                                            <span class="o_address_city o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.city"/>,
+                                                            </span>
+                                                            <span class="o_address_state o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.state_id.name"/>,
+                                                            </span>
+                                                            <span class="o_address_zip o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.zip"/>,
+                                                            </span>
+                                                            <span class="o_address_country o_form_field o_form_required"
+                                                                  data-original-title="" title=""><t
+                                                                    t-esc="location_id.country_id.name"/>,
+                                                            </span>
+                                                        </div>
+
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="courier_type_id">Booking Date
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" type="date" style="line-height: 23px;width: 99%;"
+                                                   name="date" class="set-today"></input>
+                                            <script>
+                                                window.onload= function() {
+                                                    document.querySelector('.set-today').value=(new Date()).toISOString().substr(0,10));
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">-->
+                                    <!--                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"-->
+                                    <!--                                               for="courier_type_id">Is Same Address of Receiver Address-->
+                                    <!--                                            <span style="color:red">*</span>-->
+                                    <!--                                        </label>-->
+                                    <!--                                        <div class="col-md-7 col-sm-8">-->
+                                    <!--                                            <input type="checkbox"></input>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+
+
+                                    <!--                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">-->
+                                    <!--                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"-->
+                                    <!--                                               for="courier_type_id">Delivery Location-->
+                                    <!--                                            <span style="color:red">*</span>-->
+                                    <!--                                        </label>-->
+                                    <!--                                        <div class="col-md-7 col-sm-8">-->
+                                    <!--                                            <select required="1" name="delivery_location_ids" id="delivery_location_ids"-->
+                                    <!--                                                    class="form-control">-->
+                                    <!--                                                <option disabled="1" value="" selected="1">Delivery Location..</option>-->
+                                    <!--                                                <option value="0">-->
+                                    <!--                                                    <t t-esc="'Create Location '"/>-->
+                                    <!--                                                </option>-->
+                                    <!--                                                <t t-foreach="location_list or []" t-as="location_id">-->
+                                    <!--                                                    <option t-attf-partner_id="#{location_id.partner_id.id}"-->
+                                    <!--                                                            t-att-value="location_id.id">-->
+                                    <!--                                                        <div class="o_address_format">-->
+                                    <!--                                                            <span class="o_address_street o_form_field o_form_required">-->
+                                    <!--                                                                <t t-esc="location_id.street"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                            <span class="o_address_street o_form_field o_form_required"-->
+                                    <!--                                                                  data-original-title="" title=""><t-->
+                                    <!--                                                                    t-esc="location_id.street2"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                            <span class="o_address_city o_form_field o_form_required"-->
+                                    <!--                                                                  data-original-title="" title=""><t-->
+                                    <!--                                                                    t-esc="location_id.city"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                            <span class="o_address_state o_form_field o_form_required"-->
+                                    <!--                                                                  data-original-title="" title=""><t-->
+                                    <!--                                                                    t-esc="location_id.state_id.name"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                            <span class="o_address_zip o_form_field o_form_required"-->
+                                    <!--                                                                  data-original-title="" title=""><t-->
+                                    <!--                                                                    t-esc="location_id.zip"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                            <span class="o_address_country o_form_field o_form_required"-->
+                                    <!--                                                                  data-original-title="" title=""><t-->
+                                    <!--                                                                    t-esc="location_id.country_id.name"/>,-->
+                                    <!--                                                            </span>-->
+                                    <!--                                                        </div>-->
+                                    <!--                                                    </option>-->
+                                    <!--                                                </t>-->
+                                    <!--                                            </select>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+
+                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="declared_value">Declared Value
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" type="type" id="declared_value" name="declared_value" style="line-height: 23px;width: 99%;">
+                                            </input>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"
+                                               for="product_description">Cost/KG
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" type="type" id="cost" name="cost" style="line-height: 23px;width: 99%;">
+                                            </input>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="col-lg-12">
+
+                                    <style>
+                                        table td {
+                                          position: relative;
+                                        }
+
+                                        table td input {
+                                          position: absolute;
+                                          display: block;
+                                          top:0;
+                                          left:0;
+                                          margin: 0;
+                                          height: 100% !important;
+                                          width: 100%;
+                                          border-radius: 0 !important;
+                                          border: none;
+                                          padding: 10px;
+                                          box-sizing: border-box;
+                                        }
+
+                                        table td select {
+                                          position: absolute;
+                                          display: block;
+                                          top:0;
+                                          left:0;
+                                          margin: 0;
+                                          height: 100% !important;
+                                          width: 100%;
+                                          border-radius: 0 !important;
+                                          border: none;
+                                          padding: 10px;
+                                          box-sizing: border-box;
+                                          background-color: white;
+                                        }
+                                    </style>
+
+                                    <table class="table table-bordered table-hover">
+                                          <thead>
+                                            <tr>
+                                              <th class="col-md-2">Product description</th>
+                                              <th class="col-md-1">Actual weight</th>
+                                              <th class="col-md-2">Product packaging</th>
+                                              <th class="col-md-1">Length in cm</th>
+                                                <th class="col-md-1">Width in cm</th>
+                                              <th class="col-md-1">Height in cm</th>
+                                                <th class="col-md-1">No of Boxes</th>
+                                              <th class="col-md-1">Dimensional weight</th>
+                                              <th class="col-md-1">Chargeable weight</th>
+                                                <th class="col-md-1">Total weight</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td><input type="type" id="product_description" name="product_description"/></td>
+                                              <td><input required="1" type="type" name="weight" id="weight" oninput="myFunction()"/></td>
+                                              <td>
+                                                  <select id="product_packaging_id" name="product_packaging_id">
+                                                      <option value="" disabled="1" selected="1"></option>
+                                                      <option value="box">Box</option>
+                                                  </select>
+                                              </td>
+                                              <td> <input required="1" type="type" name="length" id="length" oninput="myFunction()"/></td>
+                                                <td> <input required="1" type="type" name="width" id="width" oninput="myFunction()"/></td>
+                                                <td> <input required="1" type="type" name="height" id="height" oninput="myFunction()"/></td>
+                                                <td> <input required="1" type="type" name="no_box" id="no_box" oninput="myFunction()" onchange="myFunction5()"/></td>
+                                                <td> <input required="1" type="type" name="dimensional_weight" id="dimensional_weight"/></td>
+                                                <td> <input required="1" type="type" name="chargeable_weight" id="chargeable_weight"/></td>
+                                                <td> <input required="1" type="type" name="total_weight" id="total_weight"/></td>
+                                            </tr>
+                                              <tr>
+                                              <td><input type="type" id="product_description1" name="product_description1"/></td>
+                                              <td><input type="type" name="weight1" id="weight1" oninput="myFunction1()"/></td>
+                                              <td>
+                                                  <select id="product_packaging_id1" name="product_packaging_id1">
+                                                      <option value="" disabled="1" selected="1"></option>
+                                                      <option value="box">Box</option>
+                                                  </select>
+                                              </td>
+                                              <td> <input type="type" name="length1" id="length1" oninput="myFunction1()"/></td>
+                                                <td> <input type="type" name="width1" id="width1" oninput="myFunction1()"/></td>
+                                                <td> <input type="type" name="height1" id="height1" oninput="myFunction1()"/></td>
+                                                  <td> <input type="type" name="no_box1" id="no_box1" oninput="myFunction1()" onchange="myFunction5()"/></td>
+                                                <td> <input type="type" name="dimensional_weight1" id="dimensional_weight1"/></td>
+                                                <td> <input type="type" name="chargeable_weight1" id="chargeable_weight1"/></td>
+                                                  <td> <input type="type" name="total_weight1" id="total_weight1"/></td>
+                                            </tr>
+                                              <tr>
+                                              <td><input type="type" id="product_description2" name="product_description2"/></td>
+                                              <td><input type="type" name="weight2" id="weight2" oninput="myFunction2()"/></td>
+                                              <td>
+                                                  <select id="product_packaging_id2" name="product_packaging_id2">
+                                                      <option value="" disabled="1" selected="1"></option>
+                                                      <option value="box">Box</option>
+                                                  </select>
+                                              </td>
+                                              <td> <input type="type" name="length2" id="length2" oninput="myFunction2()"/></td>
+                                                <td> <input type="type" name="width2" id="width2" oninput="myFunction2()"/></td>
+                                                <td> <input type="type" name="height2" id="height2" oninput="myFunction2()"/></td>
+                                                  <td> <input type="type" name="no_box2" id="no_box2" oninput="myFunction2()" onchange="myFunction5()"/></td>
+                                                <td> <input type="type" name="dimensional_weight2" id="dimensional_weight2"/></td>
+                                                <td> <input type="type" name="chargeable_weight2" id="chargeable_weight2"/></td>
+                                                  <td> <input type="type" name="total_weight2" id="total_weight2"/></td>
+                                            </tr>
+                                              <tr>
+                                              <td><input type="type" id="product_description3" name="product_description3"/></td>
+                                              <td><input type="type" name="weight3" id="weight3" oninput="myFunction3()"/></td>
+                                              <td>
+                                                  <select id="product_packaging_id3" name="product_packaging_id3">
+                                                      <option value="" disabled="1" selected="1"></option>
+                                                      <option value="box">Box</option>
+                                                  </select>
+                                              </td>
+                                              <td> <input type="type" name="length3" id="length3" oninput="myFunction3()"/></td>
+                                                <td> <input type="type" name="width3" id="width3" oninput="myFunction3()"/></td>
+                                                <td> <input type="type" name="height3" id="height3" oninput="myFunction3()"/></td>
+                                                  <td> <input type="type" name="no_box3" id="no_box3" oninput="myFunction3()" onchange="myFunction5()"/></td>
+                                                <td> <input type="type" name="dimensional_weight3" id="dimensional_weight3"/></td>
+                                                <td> <input type="type" name="chargeable_weight3" id="chargeable_weight3"/></td>
+                                                  <td> <input type="type" name="total_weight3" id="total_weight3"/></td>
+                                            </tr>
+                                              <tr>
+                                              <td><input type="type" id="product_description4" name="product_description4"/></td>
+                                              <td><input type="type" name="weight4" id="weight4" oninput="myFunction4()"/></td>
+                                              <td>
+                                                  <select id="product_packaging_id4" name="product_packaging_id4">
+                                                      <option value="" disabled="1" selected="1"></option>
+                                                      <option value="box">Box</option>
+                                                  </select>
+                                              </td>
+                                              <td> <input type="type" name="length4" id="length4" oninput="myFunction4()"/></td>
+                                                <td> <input type="type" name="width4" id="width4" oninput="myFunction4()"/></td>
+                                                <td> <input type="type" name="height4" id="height4" oninput="myFunction4()"/></td>
+                                                  <td> <input type="type" name="no_box4" id="no_box4" oninput="myFunction4()" onchange="myFunction5()"/></td>
+                                                <td> <input type="type" name="dimensional_weight4" id="dimensional_weight4"/></td>
+                                                <td> <input type="type" name="chargeable_weight4" id="chargeable_weight4"/></td>
+                                                  <td> <input type="type" name="total_weight4" id="total_weight4"/></td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+
+
+
+
+
+
+
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">
+                                        <label class="col-md-6" style="text-align: left;"
+                                               for="receiver_id">Cash On Delivery
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-8">
+                                            <input type="radio" name="cod" value="yes">Yes</input>
+                                            <input type="radio" name="cod" value="no">NO</input>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 form-field o_website_form_required_custom">
+                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;">No of
+                                            Pieces
+                                            <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input required="1" type="type" style="line-height: 23px;width: 99%;"
+                                                   name="no_of_pieces" id="no_of_pieces"/>
+                                        </div>
+                                    </div>
+                                    <script>
+                                            function myFunction() {
+                                              var h = document.getElementById("height").value
+                                              var w = document.getElementById("width").value
+                                              var l = document.getElementById("length").value
+                                              var calc = (h*l*w)/5000
+                                              document.getElementById("dimensional_weight").value = (h*l*w)/5000
+                                              var weight = document.getElementById("weight").value
+                                              var no_box = document.getElementById("no_box").value
+                                              if (calc >= weight) {
+                                                  document.getElementById("chargeable_weight").value = calc;
+                                                  document.getElementById("total_weight").value = calc * no_box;
+                                                } else {
+                                                  document.getElementById("chargeable_weight").value = weight;
+                                                  document.getElementById("total_weight").value = weight * no_box;
+                                                }
+                                            }
+
+                                        function myFunction1() {
+                                              var h = document.getElementById("height1").value
+                                              var w = document.getElementById("width1").value
+                                              var l = document.getElementById("length1").value
+                                              var calc = (h*l*w)/5000
+                                              document.getElementById("dimensional_weight1").value = (h*l*w)/5000
+                                              var weight = document.getElementById("weight1").value
+                                              var no_box1 = document.getElementById("no_box1").value
+                                              if (calc >= weight) {
+                                                  document.getElementById("chargeable_weight1").value = calc;
+                                                  document.getElementById("total_weight1").value = calc * no_box1;
+                                                } else {
+                                                  document.getElementById("chargeable_weight1").value = weight;
+                                                  document.getElementById("total_weight1").value = weight * no_box1;
+                                                }
+                                            }
+
+                                        function myFunction2() {
+                                              var h = document.getElementById("height2").value
+                                              var w = document.getElementById("width2").value
+                                              var l = document.getElementById("length2").value
+                                              var calc = (h*l*w)/5000
+                                              document.getElementById("dimensional_weight2").value = (h*l*w)/5000
+                                              var weight = document.getElementById("weight2").value
+                                              var no_box2 = document.getElementById("no_box2").value
+                                              if (calc >= weight) {
+                                                  document.getElementById("chargeable_weight2").value = calc;
+                                                  document.getElementById("total_weight2").value = calc * no_box2;
+                                                } else {
+                                                  document.getElementById("chargeable_weight2").value = weight;
+                                                  document.getElementById("total_weight2").value = weight * no_box2;
+                                                }
+                                            }
+
+                                        function myFunction3() {
+                                              var h = document.getElementById("height3").value
+                                              var w = document.getElementById("width3").value
+                                              var l = document.getElementById("length3").value
+                                              var calc = (h*l*w)/5000
+                                              document.getElementById("dimensional_weight3").value = (h*l*w)/5000
+                                              var weight = document.getElementById("weight3").value
+                                              var no_box3 = document.getElementById("no_box3").value
+                                              if (calc >= weight) {
+                                                  document.getElementById("chargeable_weight3").value = calc;
+                                                  document.getElementById("total_weight3").value = calc * no_box3;
+                                                } else {
+                                                  document.getElementById("chargeable_weight3").value = weight;
+                                                  document.getElementById("total_weight3").value = weight * no_box3;
+                                                }
+                                            }
+
+                                        function myFunction4() {
+                                              var h = document.getElementById("height4").value
+                                              var w = document.getElementById("width4").value
+                                              var l = document.getElementById("length4").value
+                                              var calc = (h*l*w)/5000
+                                              document.getElementById("dimensional_weight4").value = (h*l*w)/5000
+                                              var weight = document.getElementById("weight4").value
+                                              var no_box4 = document.getElementById("no_box4").value
+                                              if (calc >= weight) {
+                                                  document.getElementById("chargeable_weight4").value = calc;
+                                                  document.getElementById("total_weight4").value = calc * no_box4;
+                                                } else {
+                                                  document.getElementById("chargeable_weight4").value = weight;
+                                                  document.getElementById("total_weight4").value = weight * no_box4;
+                                                }
+                                            }
+
+
+
+                                         function myFunction5() {
+                                              var no_box = document.getElementById("no_box").value
+                                              var no_box1 = document.getElementById("no_box1").value
+                                              var no_box2 = document.getElementById("no_box2").value
+                                              var no_box3 = document.getElementById("no_box3").value
+                                              var no_box4 = document.getElementById("no_box4").value
+                                              document.getElementById("no_of_pieces").value = Number(no_box) + Number(no_box1) + Number(no_box2) + Number(no_box3) + Number(no_box4);
+                                            }
+                                    </script>
+
+<!--                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">-->
+<!--                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"-->
+<!--                                               for="discount_price">Discount price-->
+<!--                                            <span style="color:red">*</span>-->
+<!--                                        </label>-->
+<!--                                        <div class="col-md-7 col-sm-8">-->
+<!--                                            <input required="1" type="type" id="discount_price" name="discount_price" style="line-height: 23px;width: 99%;">-->
+<!--                                            </input>-->
+
+
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+<!--                                    <div class="form-group col-lg-4  form-field o_website_form_required_custom">-->
+<!--                                        <label class="col-md-4 col-sm-4 control-label" style="text-align: left;"-->
+<!--                                               for="product_description">Package Description-->
+<!--                                            <span style="color:red">*</span>-->
+<!--                                        </label>-->
+<!--                                        <div class="col-md-7 col-sm-8">-->
+<!--                                            <input type="type" id="product_description" name="product_description">-->
+<!--                                            </input>-->
+
+
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                </div>
+
+
+                            </section>
+                            <div class="col-lg-12">
+                                <center>
+                                    <div class="form-group form-field o_website_form_required_custom">
+                                        <input type="submit" class="btn btn-primary submit confirm_booking"
+                                               value="Confirm Booking"/>
+                                    </div>
+                                </center>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="booking_courier_success" name="Booking Courier - Success" page="True">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="col-sm-12 courier_main">
+                    <center>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <span class="wlc">Courier has been booked</span>
+                        <br/>
+                        <br/>
+                        <form action="/page/booking_page/print" method="post" enctype="multipart/form-data"
+                              class="s_website_form form-horizontal container-fluid mt32">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="courier_id" t-att-value="courier_id.id"/>
+                            <div class="form-group form-field o_website_form_required_custom">
+                                <input type="submit" class="btn btn-primary submit" value="Print AirWay Bill"/>
+                            </div>
+                        </form>
+                    </center>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

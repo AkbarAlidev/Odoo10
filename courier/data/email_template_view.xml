@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Email template for state changed notification -->
+    
+    <record id="email_template_courier_status" model="mail.template">
+            <field name="name">Courier Status Mail</field>
+            <field name="subject">Courier Status</field>
+            <field name="model_id" ref="model_courier_courier" />
+            <field name="auto_delete" eval="False" />
+            <field name="body_html">
+            </field>
+     </record>
+
+</odoo>

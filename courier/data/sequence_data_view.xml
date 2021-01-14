@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+         <record id="seq_release_courier" model="ir.sequence">
+            <field name="name">Courier Number</field>
+            <field name="code">courier.courier</field>
+<!--            <field name="prefix">COU/%(range_year)s/</field>-->
+             <field name="prefix">010000</field>
+            <field name="padding">6</field>
+             <field name="number_next">138001</field>
+             <field name="number_increment">1</field>
+        </record>
+
+        <record id="seq_track_courier" model="ir.sequence">
+            <field name="name">Tracking Number</field>
+            <field name="code">courier.tracking</field>
+            <field name="prefix">TRACK/%(range_year)s/</field>
+            <field name="padding">5</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+        </record>
+    </data>
+</odoo>

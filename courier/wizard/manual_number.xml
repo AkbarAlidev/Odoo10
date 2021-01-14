@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_manual_number_form" model="ir.ui.view">
+        <field name="name">Manual number</field>
+        <field name="model">manual.number</field>
+        <field name="arch" type="xml">
+            <form string="Add Manual courier number">
+                <p class="oe_grey">
+                    Add manual courier number
+                </p>
+                <group>
+                    <group>
+                        <field name="courier_number"/>
+
+                    </group>
+                </group>
+                <footer>
+                    <button name="update_courier_number" string="Change number" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_manual_number_courier" model="ir.actions.act_window">
+        <field name="name">Change courier number</field>
+        <field name="src_model">courier.courier</field>
+        <field name="res_model">manual.number</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="courier.view_manual_number_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="manual_number">
+        <field name="model_id" ref="courier.model_courier_courier"/>
+        <field name="name">Change courier number</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.act_window,' + str(ref('action_manual_number_courier'))"/>
+        <field name="key">action</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="model">courier.courier</field>
+    </record>
+
+
+</odoo>

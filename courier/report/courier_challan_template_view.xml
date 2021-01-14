@@ -1,0 +1,1492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="courier.label_57x35">
+        <div class="page">
+            <t t-foreach="docs" t-as="obj">
+                <table style="font-size:40px !important">
+                    <tr>
+                        <td class="col-xs-5" style="width:50px !important;">
+                            <img style="width:60px;height:30px" t-att-src="'/courier/static/src/img/arman.png'"/>
+                        </td>
+                        <td style="padding-top:5%;font-size:15px; width:90px;vertical-align: middle">
+
+                            <img t-if="obj.number and len(obj.number) == 13"
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"
+                                 style="width:530%;height:30%;"/>
+                            <img t-elif="obj.number and len(obj.number) == 8"
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"
+                                 style="width:530%;height:30%;"/>
+                            <img t-else=""
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"
+                                 style="width:530%;height:30%;"/>
+
+
+                        </td>
+
+
+                    </tr>
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+
+                        <td class="col-xs-5">
+                            <span style="padding-left:27%;font-size:25px;float:center">
+                                <t t-esc="obj.number"/>
+                            </span>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width:40px;border: 1px solid black;font-size:20px;">
+                            <span style="margin-left:3px;">Customer Reference Number:</span>
+                            <p>
+                                <b>
+                                    <span style="font-size:15px;padding-left:7%;" t-field="obj.sender_id.code"/>
+                                </b>
+                            </p>
+                        </td>
+                        <td style="width:40px;border: 1px solid black;font-size:20px; ">
+                            <span style="margin-left:3px;">No.of
+                                pieces
+                            </span>
+                            <p>
+                                <b>
+                                    <span style="padding-left:8%;font-size:15px;" t-field="obj.no_of_pieces"/>
+                                </b>
+                            </p>
+                            <br/>
+                        </td>
+                        <td style="width:40px;border: 1px solid black;font-size:20px; ">
+                            <span style="margin-left:3px;">Weight</span>
+                            <p>
+                                <b>
+                                    <span style="font-size:15px;padding-left:5%;" t-field="obj.weight"/>
+                                    <span style="font-size:15px;padding-left:5%;" t-field="obj.uom_categ"/>
+                                </b>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"
+                            style="width:40px;border-right: 1px solid black; border-left: 1px solid black;font-size:15px;">
+                            From
+                            <div style="margin-left:9px;font-size:15px;">
+                                <div style="" class="o_address_format">
+                                    <b>
+                                        <p style="margin: 2px;">
+                                            <t t-esc="obj.sender_id.name"/>
+                                        </p>
+
+                                        <p style="margin: 2px;">
+                                            <t t-if="obj.street">
+                                                <t t-esc="obj.street"/>,
+                                            </t>
+                                            <t t-if="obj.street2">
+
+                                                <t t-esc="obj.street2"/>,
+                                            </t>
+                                            <t t-if="obj.city">
+
+                                                <t t-esc="obj.city"/>,
+
+                                            </t>
+                                        </p>
+
+                                        <p style="margin: 2px;">
+                                            <t t-if="obj.state_id">
+                                                <t t-esc="obj.state_id.name"/>,
+                                            </t>
+                                            <t t-if="obj.area_id">
+                                                <t t-esc="obj.area_id.name"/>,
+                                            </t>
+                                            <t t-if="obj.zone_id">
+                                                <t t-esc="obj.zone_id.name"/>,
+                                            </t>
+                                            <t t-if="obj.zip">
+                                                -
+                                                <t t-esc="obj.zip"/>
+                                            </t>
+                                        </p>
+                                        <t t-if="obj.country_id">
+                                            <p style="margin: 2px;">
+                                                <t t-esc="obj.country_id.name"/>
+                                            </p>
+                                        </t>
+                                        <t t-if="obj.sender_mobile or obj.sender_phone">
+                                            <span style="margin-left:3px;">Phone:</span>
+                                            <span style="font-size:15px;padding-left:5%;" t-field="obj.receiver_phone"/>
+                                            <span style="font-size:15px;padding-left:5%;"
+                                                  t-field="obj.receiver_mobile"/>
+                                        </t>
+                                    </b>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td colspan="1" style="border-right: 1px solid black;  font-size:20px;">
+                            <span style="margin-left:3px;">Pick Up date</span>
+                            <p style="margin: 2px;font-size:15px;">
+                                <b>
+                                    <p style="margin:2px">
+                                        <t t-esc="obj.pickup_date_time"/>
+                                    </p>
+                                </b>
+                            </p>
+
+                        </td>
+
+                        <td colspan="1" style="border-right: 1px solid black; font-size:20px;">
+                            <span style="margin-left:3px;">Drop off date</span>
+                            <p style="margin: 2px;">
+                                <b>
+                                    <p style="font-size:15px;padding-left:5%;" t-field="obj.deliver_date"/>
+                                </b>
+                            </p>
+                            <br/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"
+                            style="border-right: 1px solid black; border-top:1px solid black; font-size:20px; ">
+                            <span style="margin-left:3px;">Mode of Payment</span>
+                            <br/>
+                            <b>
+                                <p style="font-size:15px;">
+                                    <t t-if="obj.cod">
+                                        <t t-esc="'Cash On Delivery'"/>
+                                        -
+                                        <t t-esc="obj.price"/>
+
+                                    </t>
+                                </p>
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td colspan="2"
+                            style="border-right: 1px solid black;border-top: 1px solid black;   font-size:20px; ">
+                            <span style="margin-left:3px;">Courier Type</span>
+                            <p style="margin:2px">
+                                <b>
+                                    <span style="font-size:15px;margin-left:6px;" t-field="obj.service_type"/>
+                                </b>
+
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black;font-size:20px;">To
+
+                            <div style="margin-left:6px;font-size:15px;">
+                                <div class="o_address_format">
+                                    <b>
+                                        <p style="margin: 2px;">
+                                            <t t-esc="obj.receiver_id.name"/>
+                                        </p>
+                                        <p style="margin: 2px;">
+                                            <t t-if="obj.receiver_id.street">
+                                                <t t-esc="obj.receiver_id.street"/>
+
+                                            </t>
+                                            <t t-if="obj.receiver_id.street2">
+                                                <t t-esc="obj.receiver_id.street2"/>
+                                            </t>
+                                            <t t-if="obj.receiver_id.city">
+
+                                                <t t-esc="obj.receiver_id.city"/>
+                                            </t>
+                                        </p>
+                                        <p style="margin: 2px;">
+                                            <t t-if="obj.receiver_id.state_id">
+                                                <t t-esc="obj.receiver_id.state_id.name"/>
+                                            </t>
+                                            <t t-if="obj.receiver_id.area_id">
+                                                <t t-esc="obj.area_id.name"/>
+                                            </t>
+                                            <t t-if="obj.receiver_id.zone_id">
+                                                <t t-esc="obj.receiver_id.zone_id.name"/>
+                                            </t>
+                                            <t t-if="obj.receiver_id.zip">
+                                                -
+                                                <t t-esc="obj.receiver_id.zip"/>
+                                            </t>
+                                        </p>
+                                        <t t-if="obj.receiver_id.country_id">
+                                            <p style="margin: 2px;">
+                                                <t t-esc="obj.receiver_id.name"/>
+                                            </p>
+                                        </t>
+                                        <t t-if="obj.receiver_mobile or obj.receiver_phone">
+                                            <span style="margin-left:3px;">Phone:</span>
+                                            <span style="font-size:15px;padding-left:5%;" t-field="obj.receiver_phone"/>
+                                            <span style="font-size:15px;padding-left:5%;"
+                                                  t-field="obj.receiver_mobile"/>
+
+                                        </t>
+                                    </b>
+                                </div>
+
+
+                                <!--                                <p>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                              t-field="obj.receiver_id.name"/>-->
+                                <!--                                    </b>-->
+                                <!--                                </p>-->
+                                <!--                                <p>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                              t-field="obj.receiver_id.street"/>-->
+                                <!--                                    </b>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                              t-field="obj.receiver_id.street2"/>-->
+                                <!--                                    </b>-->
+                                <!--                                </p>-->
+                                <!--                                <p>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                              t-field="obj.receiver_id.city"/>-->
+                                <!--                                    </b>-->
+                                <!--                                    <t t-if="obj.state_id.name">-->
+
+                                <!--                                        <b>-->
+                                <!--                                            <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                                  t-field="obj.receiver_id.state_id.name"/>-->
+                                <!--                                        </b>-->
+
+                                <!--                                    </t>-->
+                                <!--                                </p>-->
+                                <!--                                <p>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;" t-field="obj.zip"/>-->
+                                <!--                                    </b>-->
+                                <!--                                </p>-->
+                                <!--                                <p>-->
+                                <!--                                    <b>-->
+                                <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                <!--                                              t-field="obj.receiver_id.country_id.name"/>-->
+                                <!--                                    </b>-->
+                                <!--                                </p>-->
+                                <p>
+                                    <!--                                    <t t-if="obj.receiver_mobile or obj.receiver_phone">-->
+                                    <!--                                        Phone:-->
+                                    <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                    <!--                                              t-field="obj.receiver_phone"/>-->
+                                    <!--                                        <span style="font-size:15px;padding-left:5%;"-->
+                                    <!--                                              t-field="obj.receiver_mobile"/>-->
+                                    <!--                                    </t>-->
+
+                                </p>
+
+                            </div>
+
+                        </td>
+                        <td colspan="2" style="border: 1px solid black;font-size:20px; ">
+                            <span style="margin-left:3px;">Package
+                                description
+                            </span>
+                            <b>
+                                <p>
+                                    <b>
+                                        <span style="font-size:15px;padding-left:5%;"
+                                              t-field="obj.product_description"/>
+                                    </b>
+                                </p>
+                            </b>
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </div>
+    </template>
+
+
+    <template id="courier.courier_challan">
+
+        <t t-call="report.html_container">
+            <!--            <t t-call="report.external_layout">-->
+<!--            <div class="page">-->
+<!--                <t t-foreach="docs" t-as="obj">-->
+<!--                    <table style="font-size:30px !important;width:100%">-->
+<!--                        <tr>-->
+<!--                            <td style="width:20%;">-->
+<!--                                <img style="width:50%;height:60%" t-att-src="'/courier/static/src/img/arman.png'"/>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: center;padding-top:5%;font-size:15px; vertical-align: middle;"-->
+<!--                                class="col-xs-5">-->
+<!--                                <img t-if="obj.number and len(obj.number) == 13"-->
+<!--                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"-->
+<!--                                     style="width:100%;height:28%;"/>-->
+<!--                                <img t-elif="obj.number and len(obj.number) == 8"-->
+<!--                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"-->
+<!--                                     style="width:100%;height:28%;"/>-->
+<!--                                <img t-else=""-->
+<!--                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"-->
+<!--                                     style="width:100%;height:28%;"/>-->
+<!--                                <span t-field="obj.number"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                    <br></br>-->
+<!--                    <center>-->
+<!--                        <table style="width: 100%;">-->
+<!--                            <tr>-->
+<!--                                <td style="border: 1px solid black;font-size:16px;">-->
+<!--                                    <span style="margin-left:3px;">Customer Reference Number:</span>-->
+<!--                                    <br/>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:20px;padding-left:7%;" t-field="obj.sender_id.code"/>-->
+<!--                                    </b>-->
+<!--                                    <br/>-->
+<!--                                </td>-->
+<!--                                <td style="border: 1px solid black;font-size:16px; ">-->
+<!--                                    <span style="margin-left:3px;">No.of-->
+<!--                                        pieces-->
+<!--                                    </span>-->
+<!--                                    <br/>-->
+<!--                                    <b>-->
+<!--                                        <span style="padding-left:8%;" t-field="obj.no_of_pieces"></span>-->
+<!--                                    </b>-->
+<!--                                    <br/>-->
+<!--                                    <br/>-->
+<!--                                </td>-->
+<!--                                <td style="border: 1px solid black;font-size:16px; ">-->
+<!--                                    <span style="margin-left:3px;">Weight</span>-->
+<!--                                    <br/>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:16px;padding-left:5%;" t-field="obj.weight"/>-->
+<!--                                        <span style="font-size:16px;padding-left:5%;" t-field="obj.uom_categ"/>-->
+<!--                                    </b>-->
+<!--                                    <br/>-->
+<!--                                    <br/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td rowspan="3"-->
+<!--                                    style="border-right: 2px solid black; border-left: 2px solid black;font-size:16px;">-->
+<!--                                    From-->
+<!--                                    <div style="margin-left:9px;">-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.sender_id.name"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;" t-field="obj.street"/>-->
+<!--                                            </b>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;" t-field="obj.street2"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;" t-field="obj.city"/>-->
+<!--                                            </b>-->
+<!--                                            <t t-if="obj.state_id.name">-->
+<!--                                                ,-->
+<!--                                                <b>-->
+<!--                                                    <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                          t-field="obj.state_id.name"/>-->
+<!--                                                </b>-->
+
+<!--                                            </t>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;" t-field="obj.zip"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.country_id.name"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <t t-if="obj.sender_phone or obj.sender_mobile">-->
+<!--                                                Phone:-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.sender_phone"/>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.sender_mobile"/>-->
+<!--                                            </t>-->
+
+<!--                                        </p>-->
+
+<!--                                    </div>-->
+
+<!--                                </td>-->
+<!--                                <td colspan="1" style="border-right: 2px solid black;  font-size:16px;">-->
+<!--                                    <span style="margin-left:3px;">Pick Up date</span>-->
+<!--                                    <br></br>-->
+
+<!--                                    <b>-->
+<!--                                        <span style="font-size:16px;padding-left:5%;" t-field="obj.pickup_date_time"/>-->
+<!--                                    </b>-->
+<!--                                    <br/>-->
+<!--                                    <br/>-->
+<!--                                </td>-->
+
+<!--                                <td colspan="1" style="border-right: 2px solid black; font-size:16px;">-->
+<!--                                    <span style="margin-left:3px;">Drop off date</span>-->
+<!--                                    <br/>-->
+<!--                                    <b>-->
+<!--                                        <span style="font-size:16px;padding-left:5%;" t-field="obj.deliver_date"/>-->
+<!--                                    </b>-->
+<!--                                    <br/>-->
+<!--                                    <br/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            &lt;!&ndash;                            <tr style="border-right: 2px solid black;">&ndash;&gt;-->
+
+<!--                            &lt;!&ndash;                                <td colspan="1" style="border-right: 2px solid black; font-size:16px;">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <span style="margin-left:3px;">Mode of Payment</span>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <b>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                       <t t-if="obj.cod">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                           <t t-esc="'Cash On Delivery'"></t>&ndash;&gt;-->
+
+<!--                            &lt;!&ndash;                                       </t>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    </b>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <td colspan="1" style="border-right: 2px solid black;  font-size:16px;">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <span style="margin-left:3px;">Courier Type</span>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <b>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                        <span style="font-size:16px;padding-left:5%;" t-field="obj.courier_type_id.name"/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    </b>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <br/>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+<!--                            <tr>-->
+<!--                                <td colspan="2"-->
+<!--                                    style="border-right: 2px solid black; border-top:2px solid black; font-size:16px; ">-->
+<!--                                    <span style="margin-left:3px;">Mode of Payment</span>-->
+<!--                                    <br></br>-->
+<!--                                    <br></br>-->
+
+<!--                                    <b>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+
+<!--                                                <t t-if="obj.cod">-->
+<!--                                                    <span style="margin-left:9px;">-->
+<!--                                                        <t t-esc="'Cash On Delivery'"></t>-->
+<!--                                                        - -->
+<!--                                                        <t t-esc="obj.price"/>-->
+<!--                                                    </span>-->
+
+<!--                                                </t>-->
+<!--                                            </b>-->
+
+<!--                                        </p>-->
+<!--                                    </b>-->
+<!--                                    <br></br>-->
+
+<!--                                </td>-->
+
+<!--                            </tr>-->
+<!--                            <tr>-->
+
+<!--                                <td colspan="2"-->
+<!--                                    style="border-right: 2px solid black;border-top: 2px solid black;   font-size:16px; ">-->
+<!--                                    <span style="margin-left:3px;">Courier Type</span>-->
+<!--                                    <br></br>-->
+<!--                                    <b>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;margin-left:9px;"-->
+<!--                                                      t-field="obj.service_type"/>-->
+<!--                                            </b>-->
+
+<!--                                        </p>-->
+<!--                                    </b>-->
+
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td style="border: 1px solid black;font-size:16px;">To-->
+
+<!--                                    <div style="margin-left:9px;">-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_id.name"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_id.street"/>-->
+<!--                                            </b>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_id.street2"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_id.city"/>-->
+<!--                                            </b>-->
+<!--                                            <t t-if="obj.state_id.name">-->
+
+<!--                                                <b>-->
+<!--                                                    <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                          t-field="obj.receiver_id.state_id.name"/>-->
+<!--                                                </b>-->
+
+<!--                                            </t>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;" t-field="obj.zip"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_id.country_id.name"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                        <p>-->
+<!--                                            <t t-if="obj.receiver_mobile or obj.receiver_phone">-->
+<!--                                                Phone:-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_phone"/>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.receiver_mobile"/>-->
+<!--                                            </t>-->
+
+<!--                                        </p>-->
+
+<!--                                    </div>-->
+
+<!--                                </td>-->
+<!--                                <td colspan="2"-->
+<!--                                    style="border: 1px solid black;font-size:16px; ">-->
+<!--                                    <span style="margin-left:3px;">Package-->
+<!--                                        description-->
+<!--                                    </span>-->
+
+<!--                                    <br/>-->
+<!--                                    <b>-->
+<!--                                        <p>-->
+<!--                                            <b>-->
+<!--                                                <span style="font-size:16px;padding-left:5%;"-->
+<!--                                                      t-field="obj.product_description"/>-->
+<!--                                            </b>-->
+<!--                                        </p>-->
+<!--                                    </b>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+<!--                    </center>-->
+<!--                    <br/>-->
+<!--                    <p>-->
+<!--                        <b>I agree to UDA Express terms and conditions at our website www.yundauae.com</b>-->
+<!--                    </p>-->
+<!--                </t>-->
+<!--            </div>-->
+
+            <div class="page" style="width: 560px; height: 330px;">
+                <t t-foreach="docs" t-as="obj">
+                    <div style="display: flex; display: -webkit-box; margin-left:13em; width: 560px; !important">
+                 <img style="width:30%;height:17%; padding-bottom:1em;" t-att-src="'/courier/static/src/img/arman.png'"/>
+                    <img t-if="obj.number and len(obj.number) == 13"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"
+                                     style="width:60%;height:8%;" />
+                                <img t-elif="obj.number and len(obj.number) == 8"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"
+                                     style="width:60%;height:8%;"/>
+                                <img t-else=""
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"
+                                     style="width:60%;height:8%;"/>
+<!--                                <span t-field="obj.number" style="margin-left: 230px;"/>-->
+                    </div>
+                    <p style="margin-left:28em;"><t t-esc="obj.number"></t></p>
+
+    <p class="from-text" style="position: fixed; margin-top: 35px; margin-left: 70px; font-size: 4rem; font-weight: bolder; color: #cdcdcd; z-index: 1;">FROM</p>
+    <p class="to-text" style="position: fixed; margin-top: 35px; margin-left: 500px; font-size: 4rem; font-weight: bolder; color: #cdcdcd; z-index: 1;">TO</p>
+    <section class="top-tables" style="display: flex; display: -webkit-box !important">
+
+      <table class="table-one" style="width: 75%; height:35%; font-size: 0.25rem; margin: 0.09em 1em; border-collapse: collapse; position: relative; z-index: 99;">
+        <tr>
+            <th rowspan="2" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Origin<br></br> from(sender)</th>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <b> <t t-esc="obj.country_id.name"></t></b>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.sender_id.code"></t>
+          </td>
+          <td style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Account number</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Company/Name: <t t-esc="obj.sender_id.name"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Address:
+              <t t-esc="obj.street"></t>,<t t-esc="obj.street2"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.city"></t>
+
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.state_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Postal code:
+              <t t-esc="obj.zip"></t>
+          </td>
+          <td colspan="2" style="width: 90%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Country:
+              <t t-esc="obj.country_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Contact name:</td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 0px; text-align: left; height: 8px; width: 15px;">
+              Tel.No:<t t-esc="obj.sender_phone"></t> <t t-esc="obj.sender_mobile"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Shippers reference:</td>
+        </tr>
+        <tr>
+          <th rowspan="2" colspan="2" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Signature over printed name:       <t t-esc="obj.sender_id.name"></t>
+          </th>
+            <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Time: <t t-esc="obj.date"></t> </td>
+        </tr>
+        <tr>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Date: <span t-field="obj.date" t-field-options='{"widget": "date"}'></span></td>
+        </tr>
+      </table>
+      <table class="table-two" style="width: 75%; height:35%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; position: relative; z-index: 99;">
+        <tr>
+          <th class="hideme" style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px; border-left: none; border-top: none;"></th>
+            <th style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><t t-esc="obj.receiver_id.country_id.name"></t></th>
+          <th style="background-color:#3C5781; color: white; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">DESTINATION</th>
+        </tr>
+        <tr>
+          <th style="background-color:#3C5781; color: white; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">TO(Receiver)</th>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.receiver_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Company/Name:<t t-esc="obj.receiver_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Address:  <t t-esc="obj.receiver_id.street"></t> , <t t-esc="obj.receiver_id.street2"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.receiver_id.city"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.receiver_id.state_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Postal code: <t t-esc="obj.receiver_id.zip"></t>
+          </td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Country: <t t-esc="obj.receiver_id.country_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Contact name:</td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Tel.No: <t t-esc="obj.receiver_phone"></t> , <t t-esc="obj.receiver_mobile"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="background-color:#3C5781; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Received in good order by:</td>
+        </tr>
+        <tr>
+          <th rowspan="2" colspan="2" style="font-size: 0.875rem; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Signature over printed name: <t t-esc="obj.receiver_id.name"></t>
+          </th>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"> Time: <t t-esc="obj.date"></t> </td>
+        </tr>
+        <tr>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Date: <span t-field="obj.date" t-field-options='{"widget": "date"}'></span></td>
+        </tr>
+      </table>
+
+    </section>
+    <section class="bottom-tables" style="display: flex; display: -webkit-box; margin-left:-5px; margin-top:2px;">
+
+      <table class="table-three" style="width: 75%; height:35%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1;">
+        <tr>
+          <th colspan="11" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Shipment details</th>
+        </tr>
+        <tr>
+          <th rowspan="2" colspan="5" style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">General description</th>
+          <th rowspan="2" style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Items</th>
+          <th colspan="2" style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Weight</th>
+          <th colspan="3" style="border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Dimensions</th>
+        </tr>
+        <tr>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.uom_categ"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">gm</td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Length</td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Height</td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">width</td>
+        </tr>
+
+
+          <t t-if="len(obj.demo_id)==0">
+
+        <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+          </t>
+
+
+
+          <t t-if="len(obj.demo_id)==1">
+
+        <tr>
+
+                <t t-foreach="obj.demo_id[0]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.no_of_pieces"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+          </t>
+
+          <t t-if="len(obj.demo_id)==2">
+
+              <tr>
+
+                <t t-foreach="obj.demo_id[0]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.no_of_pieces"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+        <tr>
+          <t t-foreach="obj.demo_id[1]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+          </t>
+
+           <t t-if="len(obj.demo_id)==3">
+
+              <tr>
+
+                <t t-foreach="obj.demo_id[0]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.no_of_pieces"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+        <tr>
+          <t t-foreach="obj.demo_id[1]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+               <tr>
+
+                <t t-foreach="obj.demo_id[2]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+               <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+               <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+
+          </t>
+
+
+          <t t-if="len(obj.demo_id)==4">
+
+              <tr>
+
+                <t t-foreach="obj.demo_id[0]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.no_of_pieces"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+        <tr>
+          <t t-foreach="obj.demo_id[1]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+               <tr>
+
+                <t t-foreach="obj.demo_id[2]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+               <tr>
+
+                <t t-foreach="obj.demo_id[3]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+              <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><p></p></td>
+        </tr>
+
+          </t>
+
+
+          <t t-if="len(obj.demo_id) &gt;4">
+
+              <tr>
+
+                <t t-foreach="obj.demo_id[0]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.no_of_pieces"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+        <tr>
+          <t t-foreach="obj.demo_id[1]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+               <tr>
+
+                <t t-foreach="obj.demo_id[2]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+               <tr>
+
+                <t t-foreach="obj.demo_id[3]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+              <tr>
+
+                <t t-foreach="obj.demo_id[4]" t-as="demo1">
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.product_description"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+<!--              <t t-esc="obj.no_of_pieces"></t>-->
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-esc="demo1.weight"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+               <t t-esc="demo1.length"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.width"></t>
+          </td>
+          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="demo1.height"></t>
+          </td>
+                </t>
+
+        </tr>
+
+          </t>
+
+
+<!--        <tr>-->
+<!--          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--          <td style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>-->
+<!--        </tr>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <tr>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Total declared value</td>
+          <td colspan="6" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              <t t-esc="obj.declared_value"></t> <t t-esc="obj.company_id.currency_id.name"></t>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Insurance</td>
+          <td colspan="5" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Value of customs</td>
+        </tr>
+        <tr>
+          <td colspan="6" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+          <td colspan="5" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+        </tr>
+        <tr>
+          <td colspan="11" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Full description of goods(proforma invoice required for all non doc Shipment)</td>
+        </tr>
+        <tr>
+          <td colspan="11" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">NO CASH,CASH EQUIVALENT OR GOLD JEWELLERY WILL BE ACCEPTED</td>
+        </tr>
+        <tr>
+          <td colspan="11" style="background-color:#C28969; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Received by Arman express courier</td>
+        </tr>
+        <tr>
+          <td rowspan="2" colspan="7" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+              Signature over printed name:  <t t-esc="obj.sender_id.name"></t>
+          </td>
+          <td colspan="4" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Time:</td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Date:</td>
+        </tr>
+
+      </table>
+      <table class="table-four" style="width: 75%; height:35%; font-size: 0.875rem; margin: 0.09em 0em; border-collapse: collapse; z-index: 1;">
+        <tr>
+          <td colspan="8" style="background-color:#3C5781; color: white; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"><b>Services</b>- please contact arman express for Service availability(select)</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Air Freight</td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Road Freight</td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Economy express</td>
+          <td colspan="2" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">Local Deliveries</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 100%; font-size: 0.25rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <t t-if="obj.service_type == 'door_to_door'">
+              <input id = "Doortodoor" type="checkbox" name="Doortodoor" checked="1"/>
+          </t>
+              <t t-else="">
+                  <input id = "Doortodoor" type="checkbox" name="Doortodoor"/>
+              </t>
+            <label for="Doortodoor" style="position: relative;">Door to door</label><br></br>
+              <t t-if="obj.service_type == 'clearance_by_consignee'">
+                <input type="checkbox" id="Doortoairport" name="Doortoairport" checked="1"/>
+              </t>
+              <t t-else="">
+                  <input type="checkbox" id="Doortoairport" name="Doortoairport"/>
+              </t>
+            <label for="Doortoairport" style="position: relative;;">Door to Airport</label>
+          </td>
+          <td colspan="2" style="width: 100%; font-size: 0.25rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <input id = "express" type="checkbox" name="express" />
+            <label for="express" style="position: relative;">Express</label><br></br>
+            <input type="checkbox" id="Economy" name="Economy"/>
+            <label for="Economy" style="position: relative;">Economy</label>
+          </td>
+          <td colspan="2" style="width: 100%; font-size: 0.25rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <input id = "Worldwide" type="checkbox" name="Worldwide" />
+            <label for="Worldwide" style="position: relative;">Worldwide</label><br></br>
+            <input type="checkbox" id="gcc" name="gcc"/>
+            <label for="gcc" style="position: relative;">GCC</label>
+          </td>
+          <td colspan="2" style="width: 100%; font-size: 0.25rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <input id = "bulk" type="checkbox" name="bulk" />
+            <label for="Doortodoor" style="position: relative;">Bulk</label><br></br>
+            <input type="checkbox" id="timedefinite" name="timedefinite"/>
+            <label for="timedefinite" style="position: relative;">Time definite</label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" style="background-color:#3C5781; color: white; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px; font-size: 0.875rem;">Special Delivery Instructions</td>
+          <td rowspan="2" colspan="4" style="align-items: center; text-align: center; justify-content: center; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;">
+            <img t-att-src="'/courier/static/src/img/arman.png'" alt="Arman express" style="width:110px; height: 27px; margin-left:70px; margin-top:5px;"/>
+            <p style="margin-left:80px; margin-top:5px; font-size: 0.875rem;">Thank you for using our Service</p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; padding: 2px; text-align: left; height: 8px; width: 20px;"></td>
+        </tr>
+        <tr>
+            <td colspan="8" style="text-align: center; justify-content: center; align-items: center; font-size: 0.875rem; width: 100%; font-size: 0.875rem; margin: 0.09em 1em; border-collapse: collapse; z-index: 1; border: 1px solid black; text-align: left; height: 8px; width: 20px;"><p style="margin-left:145px; margin-top: 5px;">www.armanexpress.com</p></td>
+        </tr>
+      </table>
+    </section>
+    <div class="bottom-text" style="font-size: 0.8rem; padding-left: 430px; margin-top: -55px; text-align: left; width:150%;">
+      <p>
+        NON NEGOTIABLE CONSIGNMENT NOTE IS SUBJECT TO STANDARD TRADING CONDITIONS SHOWN ON THE BACKSIDE OF THE SHIPPER'S RECEIPT
+      </p>
+      <p style="color: #C28969; font-size: 0.8rem; margin-top: -9px;">PLEASE TYPE/ WRITE HARD THIS IS A SIX COPY FORM</p>
+      <p style="color:#3C5781; font-size: 0.8rem; margin-top: -9px; ">DANGEROUS GOODS NOT ACCEPTED</p>
+    </div>
+                </t>
+
+  </div>
+
+
+
+
+
+
+            <!--            </t>-->
+        </t>
+    </template>
+</odoo>

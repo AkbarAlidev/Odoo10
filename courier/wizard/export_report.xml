@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_export_report" model="ir.ui.view">
+        <field name="name">Export Report</field>
+        <field name="model">export.report</field>
+        <field name="arch" type="xml">
+            <form string="Export Report">
+                <group>
+                    <group>
+                        <field name="mawb_no" class="oe_inline"/>
+                    </group>
+                    <group>
+                        <field name="flight_number" class="oe_inline"/>
+                        <field name="etd" class="oe_inline"/>
+                        <field name="eta" class="oe_inline"/>
+                    </group>
+                    <group>
+                        <field name="destination" class="oe_inline" required="1"/>
+                        <field name="date" class="oe_inline" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="check_report" string="Create Statement" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_export_report" model="ir.actions.act_window">
+        <field name="name">Export Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">export.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_export_report" action="action_view_export_report"
+              parent="menu_courier_report" sequence="3"/>
+</odoo>

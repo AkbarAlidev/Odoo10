@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="courier.courier_external_layout_header">
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 45px;"/>
+                </div>
+                <!--            <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>-->
+            </div>
+            <!--        <div class="row zero_min_height">-->
+            <!--            <div class="col-xs-12">-->
+            <!--                <div style="border-bottom: 1px solid black;"></div>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <div class="row">
+                <div class="col-xs-6" name="company_address">
+                    <span t-field="company.partner_id"
+                          t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                          style="border-bottom: 1px solid black; display:inline-block;"/>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="courier.courier_external_layout">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+        <t t-call="courier.courier_external_layout_header"/>
+        <t t-raw="0"/>
+        <t t-call="report.external_layout_footer"/>
+    </template>
+
+    <template id="courier.courier">
+        <t t-call="report.html_container">
+            <t t-call="courier.courier_external_layout">
+                <div class="page">
+                    <t t-set="i" t-value="0"/>
+                    <t t-foreach="docs" t-as="obj">
+                        <t t-set="i" t-value="i+1"/>
+                        <div style="width:100%;border-width:10;border: 1px solid black;">
+                            <t t-if="i==1">
+                                <h1 style="text-align: center;font-size:14px;font-weight: bold;">Courier Run Sheet</h1>
+                                <div class="row mt32 mb32">
+                                    <div class="col-xs-4">
+                                        <p style="padding-left:2%;font-weight: bold;font-size:13px;">Date:
+                                            <b>
+                                                <span style="font-size:13px;padding-left:1%;">
+                                                    <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                                                </span>
+                                            </b>
+                                        </p>
+                                        <p style="padding-left:2%;font-weight: bold;font-size:13px;">Driver:
+                                            <b>
+                                                <!--                                                <span style="font-size:13px;padding-left:1%;" t-field="obj.assign_to"/>-->
+                                            </b>
+                                        </p>
+                                        <p style="padding-left:2%;font-weight: bold;font-size:13px;">Status:
+                                            <b>
+                                                <!--                                                <span style="font-size:13px;padding-left:1%;" t-field="obj.state"/>-->
+                                            </b>
+                                        </p>
+                                        <p style="padding-left:2%;font-weight: bold;font-size:13px;">Origin:
+                                            <b>
+                                                <!--                                                <span style="font-size:13px;padding-left:1%;"-->
+                                                <!--                                                      t-field="obj.delivery_location_ids"/>-->
+                                            </b>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <table>
+                                            <!--                                            <tr>-->
+                                            <!--                                                <td style="text-align: center;border: 1px solid #A19F9E;padding-top:7%;font-size:15px; vertical-align: middle;background-color:#A19F9E;"-->
+                                            <!--                                                    class="col-xs-5">-->
+                                            <!--                                                    <span style="text-align: center;">-->
+                                            <!--                                                        <b>Dispatch Key</b>-->
+                                            <!--                                                    </span>-->
+                                            <!--                                                    <img t-if="obj.number and len(obj.number) == 13"-->
+                                            <!--                                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"-->
+                                            <!--                                                         style="width:100%;height:28%;"/>-->
+                                            <!--                                                    <img t-elif="obj.number and len(obj.number) == 8"-->
+                                            <!--                                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"-->
+                                            <!--                                                         style="width:100%;height:28%;"/>-->
+                                            <!--                                                    <img t-else=""-->
+                                            <!--                                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"-->
+                                            <!--                                                         style="width:100%;height:28%;"/>-->
+                                            <!--                                                    <span t-field="obj.number"/>-->
+                                            <!--                                                </td>-->
+                                            <!--                                            </tr>-->
+                                        </table>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <span style="width:20%;height:5%;padding-left:8%;">
+                                            <img t-att-src="'/courier/static/src/img/arman.png'" style="width:50%; height:50%;"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </t>
+                            <table style="width: 100%; border: 1px solid black;height:100px;">
+                                <tr style="background-color:#A19F9E;height:30px;">
+                                    <th style=" border: 1px solid black;padding-left:1%;">SI.No</th>
+                                    <th style=" border: 1px solid black;padding-left:1%;">AWB NO</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">Sender</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">Receiver Name/Location</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">Receiver Contact No</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">Qty</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">COD Amount</th>
+                                    <th style=" border: 1px solid black;padding-left:1%">Receiver Name/Signature</th>
+                                </tr>
+                                <tr style="height:60px;">
+                                    <td style=" border: 1px solid black;padding-left:1%">
+                                        <t t-esc="i"/>
+                                    </td>
+                                    <td style="text-align: center;padding-top:1%;font-size:15px; vertical-align: middle;"
+                                        class="col-xs-5">
+                                        <img t-if="obj.number and len(obj.number) == 13"
+                                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', obj.number, 600, 150)"
+                                             style="width:80%;height:20%;"/>
+                                        <img t-elif="obj.number and len(obj.number) == 8"
+                                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', obj.number, 600, 150)"
+                                             style="width:80%;height:20%;"/>
+                                        <img t-else=""
+                                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', obj.number, 600, 150)"
+                                             style="width:80%;height:20%;"/>
+                                        <span t-field="obj.number"/>
+                                        <p>Ref#
+                                            <span style="font-size:15px;padding-left:0.5%;" t-field="obj.track_ref"/>
+                                        </p>
+                                    </td>
+
+                                    <td style=" border: 1px solid black;padding-left:0.5%;">
+                                        <span style="font-size:15px;" t-field="obj.sender_id"/>
+                                    </td>
+                                    <td style=" border: 1px solid black;padding-left:0.5%;">
+                                        <p>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id"/>
+                                            <br/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.street"/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.street2"/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.city"/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.state_id"/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.zip"/>
+                                            <span style="font-size:15px;" t-field="obj.receiver_id.country_id"/>
+                                        </p>
+                                    </td>
+                                    <td style=" border: 1px solid black;padding-left:0.5%">
+                                        <span style="font-size:15px;" t-field="obj.receiver_id.phone"/>
+                                    </td>
+                                    <td style=" border: 1px solid black;padding-left:1%">
+                                        <span style="font-size:15px;" t-field="obj.no_of_pieces"/>
+                                    </td>
+                                    <td style=" border: 1px solid black;padding-left:%">
+                                        <span style="font-size:15px;padding-left:5%;" t-field="obj.final_price"/>
+                                    </td>
+                                    <td style=" border: 1px solid black;"></td>
+                                </tr>
+                            </table>
+                            <br/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

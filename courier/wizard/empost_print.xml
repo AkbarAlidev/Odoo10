@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_empost_report" model="ir.ui.view">
+        <field name="name">Emirates Post Fees Statement report</field>
+        <field name="model">empost.report</field>
+        <field name="arch" type="xml">
+            <form string="EMIRATES POST FEES STATEMENT DETAILS">
+                <group>
+                    <group>
+                        <field name="from_date" class="oe_inline"/>
+                        <field name="to_date" class="oe_inline"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="check_report" string="Create Statement" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_empost_report" model="ir.actions.act_window">
+        <field name="name">Emirates Post Fees Statement report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">empost.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_empost_report" action="action_view_empost_report"
+              parent="menu_courier_report" sequence="2"/>
+</odoo>

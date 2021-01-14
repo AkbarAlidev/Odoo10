@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="courier.action_empost"
+                string="Empost analysis quarter report"
+                model="empost.report"
+                report_type="qweb-pdf"
+                name="courier.courier_empost"
+                file ="courier.courier_empost"
+                menu="False"/>
+
+      <record id="courier.action_empost" model="ir.actions.report.xml">
+        <field name="print_report_name"><![CDATA[('Empost analysis quarter report-'+(object.from_date).replace('/','')+'-to-'+(object.to_date).replace('/','')+'.pdf')]]></field>
+    </record>
+
+             <record id="paperformat_empost_report" model="report.paperformat">
+            <field name="name">Empost analysis quarter report</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+      <record id="courier.action_empost" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="courier.paperformat_empost_report"/>
+        </record>
+
+
+        <template id="courier.courier_empost">
+            <t t-call="report.html_container">
+              <t t-foreach="docs" t-as="o">
+                <t t-foreach="o.get_record()" t-as="data">
+                  <div class="header">
+                    <p><b><span t-esc="data['name']"/></b></p>
+                    <p><span t-esc="data['street']"/>,<span t-esc="data['street2']"/>,<span t-esc="data['city']"/>,<span t-esc="data['state']"/>,<span t-esc="data['country']"/>,<span t-esc="data['zip']"/>,<span t-esc="data['phone']"/></p>
+                  </div>
+                <div class="page">
+
+                    <div style="align-items: center; text-align: center;">
+                      <p class="em-heading" style="text-decoration: underline;"><b>EMIRATES POST FEES STATEMENT DETAILS</b></p>
+    </div>
+    <div class="date-class">
+      <p class="from-date">From : <span t-esc="data['from_date']"/></p>
+      <p class="to-date">To : <span t-esc="data['to_date']"/></p>
+    </div>
+    <section>
+      <table style="width: 100%;">
+        <tr>
+          <th colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></th>
+          <th colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;">Description</th>
+          <th colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;">Quantity</th>
+          <th colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;">Amount</th>
+          <th colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;">Tax</th>
+        </tr>
+        <tr>
+          <td rowspan="2">Letter</td>
+          <td style="padding: 15px;">Domestic</td>
+          <td><span t-esc="data['dom_letter_qty']"/></td>
+          <td><span t-esc="data['dom_letter_price']"/></td>
+          <td><span t-esc="data['dom_letter_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Export</td>
+          <td><span t-esc="data['inter_letter_qty']"/></td>
+          <td><span t-esc="data['inter_letter_price']"/></td>
+          <td><span t-esc="data['inter_letter_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td rowspan="2">Document</td>
+          <td style="padding: 15px;">Domestic</td>
+          <td><span t-esc="data['dom_documents_qty']"/></td>
+          <td><span t-esc="data['dom_documents_price']"/></td>
+          <td><span t-esc="data['dom_documents_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Export</td>
+          <td><span t-esc="data['inter_documents_qty']"/></td>
+          <td><span t-esc="data['inter_documents_price']"/></td>
+          <td><span t-esc="data['inter_documents_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td rowspan="2">Parcel Upto 30</td>
+          <td style="padding: 15px;">Domestic</td>
+          <td><span t-esc="data['dom_upto_30_qty']"/></td>
+          <td><span t-esc="data['dom_upto_30_price']"/></td>
+          <td><span t-esc="data['dom_upto_30_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Export</td>
+          <td><span t-esc="data['inter_upto_30_qty']"/></td>
+          <td><span t-esc="data['inter_upto_30_price']"/></td>
+          <td><span t-esc="data['inter_upto_30_price_tax']"/></td>
+        </tr>
+        <tr>
+          <td rowspan="2">Parcel Above 30</td>
+          <td style="padding: 15px;">Domestic</td>
+          <td><span t-esc="data['dom_above_30_qty']"/></td>
+          <td><span t-esc="data['dom_above_30_price']"/></td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Export</td>
+          <td><span t-esc="data['inter_above_30_qty']"/></td>
+          <td><span t-esc="data['inter_above_30_price']"/></td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></td>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></td>
+          <td style="padding: 5px; border-top: 2px solid black; border-bottom: 2px solid black;"><span t-esc="data['sub_total_qty']"/></td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black;"><span t-esc="data['total_price']"/></td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black;"><span t-esc="data['total_tax']"/></td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <p><b>OTHER ITEMS</b></p>
+      <table style="width: 100%; color: blue; height:90%;">
+        <tr>
+          <td rowspan="2">Letter</td>
+          <td style="padding: 15px;">Import</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Transhipment</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td rowspan="2">Document</td>
+          <td style="padding: 15px;">Import</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Transhipment</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td rowspan="2">Parcel Upto 30</td>
+          <td style="padding: 15px;">Import</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Transhipment</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td rowspan="2">Parcel Above 30</td>
+          <td style="padding: 15px;">Import</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td style="padding: 15px;">Transhipment</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+        </tr>
+        <tr>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></td>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></td>
+          <td style="padding: 5px; border-top: 2px solid black; border-bottom: 2px solid black;">0.00</td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black;">0.00</td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black;">0.00</td>
+        </tr>
+        <tr>
+
+        </tr>
+        <tr>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black; color: black;"><b>Grant total</b></td>
+          <td colspan="1" style="border-top: 2px solid black; border-bottom: 2px solid black;"></td>
+          <td style="padding: 5px; border-top: 2px solid black; border-bottom: 2px solid black; color: black;"><b><span t-esc="data['sub_total_qty']"/></b></td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black; color: black;"><b><span t-esc="data['total_price']"/></b></td>
+          <td style="border-top: 2px solid black; border-bottom: 2px solid black; color: black;"><b><span t-esc="data['total_tax']"/></b></td>
+        </tr>
+      </table>
+    </section>
+
+                </div>
+                </t>
+              </t>
+            </t>
+
+        </template>
+    </data>
+</odoo>

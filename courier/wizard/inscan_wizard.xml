@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Zone Form View -->
+    <record id="courier_inscan_form_view" model="ir.ui.view">
+        <field name="name">courier.inscan form wizard</field>
+        <field name="model">courier.inscan.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                    <field name="warehouse"/>
+                    </group>
+                    <notebook>
+                        <page string="Scanning items">
+                            <field name="product_list">
+
+                                <tree string="" editable="bottom">
+                                    <field name="barcode"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <footer>
+                    <button name="inscan_courier_button" string="Add to Inscan list" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+
+        </field>
+    </record>
+      <record id="action_courier_inscan" model="ir.actions.act_window">
+        <field name="name">Inscan</field>
+        <field name="src_model">courier.courier</field>
+        <field name="res_model">courier.inscan.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="courier.courier_inscan_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="inscan_warehouse_menu" action="action_courier_inscan" parent="courier.menu_action_warehouse_view_all"/>
+</odoo>

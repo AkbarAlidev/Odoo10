@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_scan_process" model="ir.sequence">
+            <field name="name">In Scann Process</field>
+            <field name="code">courier.scanning</field>
+            <field name="prefix">INSCAN//</field>
+            <field name="padding">5</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="action_account_statement_report_print"
+                string="Sender Account statement"
+                model="sender.account.statement"
+                report_type="qweb-pdf"
+                name="courier.account_statement_report_template"
+                file="courier.account_statement_report_template" menu="False"/>
+    </data>
+</odoo>

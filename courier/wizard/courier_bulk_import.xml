@@ -1,0 +1,56 @@
+<odoo>
+	<data>
+        <record id="view_courier_import_wizard" model="ir.ui.view">
+            <field name="name">Bulk Import</field>
+            <field name="model">courier.bulk.import</field>
+            <field name="arch" type="xml">
+                <form name="Bulk Import" string="Bulk Import" >
+                	<sheet>
+                		<group>
+                			<p style="color:blue">Import Couriers from the Selected CSV File.</p>
+                		</group>
+						<group>
+                			<button name="download_file_format" type="object" string="Download CSV File"
+								class="oe_highlight" />
+						</group>
+						<group>
+                        <group>
+                            <field name="file_data" string="CSV file" filename="file_name" widget="binary" class="oe_inline"/>
+                        </group>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+<!--                		<group>-->
+<!--                			<field name="xlsx_file" string="CSV file"/>-->
+<!--							<field name="attachment_ids" widget="many2many_binary" invisible="1"/>-->
+<!--							<newline />-->
+<!--						</group>-->
+
+
+						<footer>
+							<button name="import_buttoncsv" type="object" string="Import"
+								class="oe_highlight" />
+							or
+							<button string="Cancel" class="oe_link" special="cancel" />
+						</footer>
+                	</sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--  Action for Property wizard Form -->
+        <record id="action_import_courier_upload" model="ir.actions.act_window">
+            <field name="name">Bulk Import</field>
+            <field name="res_model">courier.bulk.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+		<menuitem name="Bulk Import" id="menu_import_courier"
+                  parent="menu_courier"
+				  action="action_import_courier_upload"
+				  sequence="11"/>
+
+	</data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ##############################COMPANY############################################# -->
+    <record id="company_form_view_ext" model="ir.ui.view">
+        <field name="name">company.form.view.ext</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="product_id" domain="[('type','=','service')]"/>
+            </xpath>
+            <xpath expr="//page[1]" position="inside">
+                <group>
+                    <field name="terms_condition" colspan="4"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,1394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="main_menu_courier" name="Courier" icon="terp-go-home"/>
+    <menuitem id="menu_courier" name="Courier" parent="main_menu_courier" sequence="0"/>
+    <menuitem id="menu_courier_move" name="Courier Moves" parent="main_menu_courier" sequence="0"/>
+    <menuitem id="menu_partner" name="Partner" parent="main_menu_courier" sequence="0"/>
+    <menuitem id="configuration" name="Configuration" parent="main_menu_courier" sequence="1"/>
+    <menuitem id="location_configuration" name="Location Configuration" parent="configuration" sequence="1"/>
+    <menuitem action="stock.action_warehouse_form" id="menu_action_warehouse_config_courier" parent="configuration"
+              sequence="1"/>
+
+
+    <!-- ##############################COURIER_CUSTOMER############################################# -->
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.cms.inherit1</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook colspan="4" position="inside">
+                <page string="Couriers">
+                    <group>
+                        <field name="courier_discount_percentage"/>
+                    </group>
+                    <group>
+                        <separator string="Sent Couriers" colspan="4"/>
+                        <field name="courier_sent_ids" nolabel="1"/>
+                        <separator string="Received Couriers" colspan="4"/>
+                        <field name="courier_receive_ids" nolabel="1"/>
+                        <separator string="Couriers Location" colspan="4"/>
+                        <field name="sender_location_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree.cms.inherit1</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_assign_driverto_courier" model="ir.actions.act_window">
+        <field name="name">Assign Driver</field>
+        <field name="src_model">courier.courier</field>
+        <field name="res_model">courier.assign.driver.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="courier.view_assing_driver_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="assing_drivers">
+        <field name="model_id" ref="courier.model_courier_courier"/>
+        <field name="name">Assign Drivers</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.act_window,' + str(ref('action_assign_driverto_courier'))"/>
+        <field name="key">action</field>
+        <field name="domain">[('is_boolean','=',False)]</field>
+        <field name="context">{'is_boolean','=',False}</field>
+        <field name="model">courier.courier</field>
+    </record>
+
+    <record id="action_view_partner_form" model="ir.actions.act_window">
+        <field name="name">Customers/Suppliers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_partner_tree"/>
+    </record>
+
+    <menuitem action="action_view_partner_form" id="menu_action_view_partner_tree" parent="menu_partner"/>
+
+    <!-- ##############################COURIER_CARRIER_LOCATION############################################# -->
+    <record id="view_courier_carrier_location_form" model="ir.ui.view">
+        <field name="name">courier.carrier.location.form</field>
+        <field name="model">courier.carrier.location</field>
+        <field name="arch" type="xml">
+            <form string="Courier Carrier Location">
+                <sheet>
+                    <group>
+                        <label for="street" string="Address"/>
+                        <div class="o_address_format">
+                            <field name="street" placeholder="Street..." class="o_address_street" required="1"/>
+                            <field name="street2" placeholder="Street 2..." class="o_address_street" required="1"/>
+                            <field name="city" placeholder="City" class="o_address_city" required="1"/>
+                            <field name="state_id" class="o_address_state" placeholder="State"
+                                   options='{"no_open": True}' required="1"/>
+                            <field name="zip" placeholder="ZIP" class="o_address_zip" required="1"/>
+                            <field name="area_id" placeholder="Area" required="1" class="o_address_zip"/>
+                            <field name="zone_id" options='{"no_open": True}' placeholder="Zone" class="o_address_zip"
+                                   required="1"/>
+                            <field name="country_id" placeholder="Country" class="o_address_country"
+                                   options='{"no_open": True, "no_create": True}' required="1"/>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_courier_carrier_location_tree" model="ir.ui.view">
+        <field name="name">courier.carrier.location.tree</field>
+        <field name="model">courier.carrier.location</field>
+        <field name="arch" type="xml">
+            <tree string="Courier Carrier Location">
+                <field name="street" placeholder="Street..." class="o_address_street"/>
+                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                <field name="city" placeholder="City" class="o_address_city"/>
+                <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                <field name="country_id" placeholder="Country" class="o_address_country"
+                       options='{"no_open": True, "no_create": True}'/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_courier_carrier_location_filter" model="ir.ui.view">
+        <field name="name">Location Search</field>
+        <field name="model">courier.carrier.location</field>
+        <field name="arch" type="xml">
+            <search string="Search Locations">
+                <field name="name"/>
+                <!-- <field name="zipcode"/> -->
+                <separator orientation="vertical"/>
+                <field name="country_id"/>
+                <newline/>
+                <filter string="Name" icon="terp-stage" domain="[('name','!=',False)]"/>
+                <!-- <filter string="Zipcode" icon="terp-stage" domain="[('zipcode','!=',False)]"/> -->
+                <separator/>
+                <filter string="States" icon="terp-stage" domain="[('state_id','!=',False)]"/>
+                <filter string="Country" icon="terp-stage" domain="[('country_id','!=',False)]"/>
+                <separator orientation="vertical"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Name" icon="terp-stage" domain="[]" context="{'group_by':'name'}"/>
+                    <!-- <filter string="Zipcode" icon="terp-stage" domain="[]" context="{'group_by':'zipcode'}"/> -->
+                    <separator orientation="vertical"/>
+                    <filter string="States" icon="terp-stage" domain="[]" context="{'group_by':'state_id'}"/>
+                    <filter string="Country" icon="terp-stage" domain="[]" context="{'group_by':'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_courier_carrier_location_form" model="ir.actions.act_window">
+        <field name="name">Carrier location</field>
+        <field name="res_model">courier.carrier.location</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_carrier_location_tree"/>
+    </record>
+    <menuitem action="action_courier_carrier_location_form" id="menu_action_courier_carrier_location_tree"
+              parent="configuration" sequence="1"/>
+
+    <!-- ##############################COURIER_CARRIER############################################# -->
+
+    <record id="view_courier_carrier_form" model="ir.ui.view">
+        <field name="name">courier.carrier.form</field>
+        <field name="model">courier.carrier</field>
+        <field name="arch" type="xml">
+            <form string="Courier Carrier Path">
+                <sheet>
+                    <group>
+                        <group col="4" colspan="4">
+                            <field name="name" required="1"/>
+                            <field name="product_id"/>
+                            <field name="medium"/>
+                        </group>
+                        <group string="Location Details" col="4" colspan="4">
+                            <field name="from_location_id" required="1"/>
+                            <field name="to_location_id" required="1"/>
+                        </group>
+                        <separator string="Computations" colspan="4"/>
+                        <group col="6" colspan="4">
+                            <field name="distance"/>
+                            <field name="days"/>
+                            <!-- <field name="price"/> -->
+                        </group>
+                        <!-- <separator string="Providers" colspan="4"/> -->
+                        <!-- <field name="provider_ids" nolabel="1"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_courier_carrier_tree" model="ir.ui.view">
+        <field name="name">courier.carrier.tree</field>
+        <field name="model">courier.carrier</field>
+        <field name="arch" type="xml">
+            <tree string="Courier Carrier">
+                <field name="name" select="1"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <field name="medium" select="2"/>
+                <field name="product_id"/>
+                <field name="distance"/>
+                <field name="days"/>
+                <!-- <field name="price"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_carrier_filter" model="ir.ui.view">
+        <field name="name">Carrier Search</field>
+        <field name="model">courier.carrier</field>
+        <field name="arch" type="xml">
+            <search string="Search Carriers">
+                <field name="name"/>
+                <separator orientation="vertical"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <separator orientation="vertical"/>
+                <field name="medium" select="2"/>
+                <field name="product_id"/>
+                <newline/>
+                <filter name="name" domain="[('name','!=',False)]" string="Name" icon="terp-personal" help="courier"/>
+                <separator/>
+                <filter name="from_location_id" domain="[('from_location_id','!=',False)]" string="From"/>
+                <filter string="To" domain="[('to_location_id','!=',False)]" name="to_location_id"/>
+                <separator/>
+                <filter string="Medium" name="medium" icon="terp-stage" domain="[('medium','!=',False)]" context="{}"/>
+                <filter string="Product" name="product_id" icon="terp-stage" domain="[('product_id','!=',False)]"
+                        context="{}"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Name" icon="terp-stage" domain="[]" context="{'group_by':'name'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="From" icon="terp-stage" domain="[]" context="{'group_by':'from_location_id'}"/>
+                    <filter string="To" icon="terp-stage" domain="[]" context="{'group_by':'to_location_id'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="Medium" icon="terp-stage" domain="[]" context="{'group_by':'medium'}"/>
+                    <filter string="Product" icon="terp-stage" domain="[]" context="{'group_by':'product_id'}"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Extenden Options...">
+                    <field name="days"/>
+                    <separator orientation="vertical"/>
+                    <field name="distance"/>
+                    <separator orientation="vertical"/>
+                    <field name="price"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_courier_carrier_form" model="ir.actions.act_window">
+        <field name="name">Carrier</field>
+        <field name="res_model">courier.carrier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_carrier_tree"/>
+    </record>
+
+    <!-- <menuitem action="action_courier_carrier_form" id="menu_action_courier_carrier_form"
+        parent="configuration" sequence="2" /> -->
+
+    <!-- ##############################COURIER_TERMS############################################# -->
+    <record id="view_courier_terms_tree" model="ir.ui.view">
+        <field name="name">courier.terms.tree</field>
+        <field name="model">courier.terms</field>
+        <field name="arch" type="xml">
+            <tree string="Courier Terms Information ">
+                <field name="name" required="1"/>
+                <field name="code"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_terms_form" model="ir.ui.view">
+        <field name="name">courier.terms.form</field>
+        <field name="model">courier.terms</field>
+        <field name="arch" type="xml">
+            <form string="Courier Terms Information">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ##############################COURIER_COURIER############################################# -->
+    <record id="view_courier_courier_tree_list" model="ir.ui.view">
+        <field name="name">courier.courier.tree</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <tree import="false" string="Courier General Information " create="false">
+                <field name="number"/>
+                <field name="track_ref"/>
+                <field name="courier_zone_id"/>
+                <field name="main_warehouse_id"/>
+                <field name="sender_id"/>
+                <field name="receiver_id"/>
+                <field name="routing_id"/>
+                <field name="distance"/>
+                <field name="final_price"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_courier_tree" model="ir.ui.view">
+        <field name="name">courier.courier.tree</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" import="false" string="Courier General Information ">
+                <field name="number"/>
+                <field name="sender_id"/>
+                <field name="receiver_id"/>
+                <field name="routing_id"/>
+                <field name="distance"/>
+                <field name="final_price"/>
+                <field name="cod"/>
+                <field name="state"/>
+                <field name="track_ref"/>
+                <field name="courier_zone_id" string="Zone"/>
+                <!--                <field name="name"/>-->
+                <field name="main_warehouse_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_courier_form" model="ir.ui.view">
+        <field name="name">courier.courier.form</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <form string="Courier General Information">
+                <header groups="base.group_user">
+                    <!--<button string="Packing" class="btn-primary" name="action_packing" type="object" states="picked"/>-->
+                    <!--<button string="Packing" class="btn-primary" name="action_packing" type="object" states="invoiced"/>-->
+                    <!-- <button string="Assign Driver" name="assign_pickup_driver" type="object" states="ready_to_pickup"/>-->
+                    <!-- <button string="Assign Driver" name="assign_delivery_driver" type="object" states="ready_for_dispatched"/>-->
+                    <!-- <button string="InProgress" name="action_inprogress" type="object" states="packing"/>-->
+<!--                    <button string="Create invoice" class="btn-primary" name="action_invoicing" states="draft"-->
+<!--                            type="object" />-->
+                    <button string="Picked up" class="btn-primary" name="set_to_pickedup" states="pickedup"
+                            type="object" />
+                    <!-- <button string="Ready for Dispatch" name="action_ready_to_dispatch" states="inprogress" type="object"/>-->
+                    <!--<button string="Dispatch" class="btn-primary" name="action_dispatch" states="outscan"-->
+                            <!--type="object"/>-->
+                    <button string="Picked from Location" class="btn-primary" name="action_pickup_done" type="object"
+                            states="ready_to_pickup"/>
+                    <button string="In-Scan" name="action_inscan" type="object" states="invoiced,picked"/>
+                    <button string="Out-Scan" name="action_outscan" type="object" states="inscan"/>
+                    <!-- <button string="Ready For Dispatch" name="action_outscan" type="object" states="inprogress"/>-->
+                    <button string="Delivered" class="btn-primary" name="action_delivered" type="object"
+                            states="outscan"/>
+                    <button string="Lost" class="btn-primary" name="action_lost" type="object" states="outscan"/>
+                    <button string="Damaged" class="btn-primary" name="action_damaged" type="object"
+                            states="outscan"/>
+                    <button string="Return" class="btn-primary" name="action_return" type="object" states="outscan"/>
+                    <button string="Claim" class="btn-primary" name="action_claim" type="object" states="outscan"/>
+                    <button string="Refunded" class="btn-primary" name="action_refund" type="object" states="claim"/>
+                    <button string="Cancel Courier" class="btn-primary" name="cancel_courier" type="object"
+                            attrs="{'invisible':['|',('state','not in',('invoiced','draft')),('paid','=',True)]}"
+                            context="{'cancel_courier':True}"/>
+                    <button string="Reset to Draft" class="btn-primary" name="set_to_draft" states="cancel"
+                            type="object"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,inscan,outscan,delivered"
+                           clickable="True" attrs="{'invisible': [('booking_level', '=', 'international_delivery')]}"/>
+<!--                    <field name="state" widget="statusbar"-->
+<!--                           statusbar_visible="pickedup,customs_inspection,dnata_facility,departed_facility_in_dubai,-->
+<!--                            arrived_at_imamkhomeini_international_airport_ika,clearance_processed,delivered"-->
+<!--                           clickable="True" attrs="{'invisible': [('booking_level', '=', 'domestic_delivery')]}"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_id', '=', False)]}">
+                            <field name="invoice_total" widget="statinfo" string="Invoice Total"/>
+                        </button>
+                        <button name="action_view_refund_invoice" type="object" class="oe_stat_button"
+                                icon="fa-undo" attrs="{'invisible': [('refund_invoice_id', '=', False)]}">
+                            <field name="refund_invoice_total" widget="statinfo" string="Refund Total"/>
+                        </button>
+                    </div>
+                    <group>
+                        <h1 class="mt0">
+                            <field name="number" class="oe_inline" readonly="1" nolable="1"/>
+                        </h1>
+                        <group col="4" colspan="4">
+                            <!-- <field name="name" attrs="{'readonly':[('state','!=','draft')]}" string="Sender Name"-->
+                            <!-- required="1"/>-->
+                            <field name="booking_level" required="1"/>
+                            <field name="sender_id"/>
+                            <field name="sender_phone" invisible="1"/>
+                            <field name="sender_mobile" invisible="1"/>
+                            <field name="courier_zone_id" invisible="1"/>
+                            <field name="courier_type_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="company_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="courier_method"/>
+                            <field name="service_type"/>
+                            <field name="date" string="Booking Date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." required="1" class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="area_id" placeholder="Area" class="o_address_state"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options='{"no_open": True}'/>
+                                <field name="zone_id" options='{"no_open": True, "no_create": True}'
+                                       class="o_address_state" placeholder="Zone"
+                                />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                            <field string="Pickup by" name="pickup_driver_id" required="0"
+                                   attrs="{'invisible':[('state','not in',['ready_to_pickup'])],'required':[('state','=','ready_to_pickup')]}"
+                                   domain="[('is_driver','=',True)]"/>
+                            <field string="Delivered By" name="delivery_driver_id" required="0"
+                                   attrs="{'invisible':[('state','not in',['outscan','dispatched'])],'required':[('state','=','outscan')]}"
+                                   domain="[('is_driver','=',True)]"/>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Information">
+                                <group col="4" colspan="4">
+                                    <separator string="Source and Destination" colspan="4"/>
+                                    <field name="sender_location_id" string="Pickup Location"
+                                           attrs="{'invisible':[('courier_method','!=','pickup_and_delivery')], 'required':[('courier_method','=','pickup_and_delivery')]}"/>
+                                    <field name="pickup_date_time" attrs="{'invisible':[('courier_method','!=','pickup_and_delivery')]}" />
+
+                                    <field name="delivered_by"/>
+
+                                    <field name="receiver_id" required="True" string="Recipient"
+
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="receiver_phone" invisible="1"/>
+                                    <field name="receiver_mobile" invisible="1"/>
+                                    <field name="delivery_location_ids" invisible="1" string="Delivery location"/>
+                                    <field name="track_ref" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="main_warehouse_id"
+                                           options="{'no_open':True,'no_create':True}"
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="target_warehouse_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <separator string="Product Specification" colspan="4"/>
+                                    <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="uom_categ"/>
+                                    <field name="declared_value"/>
+                                    <field name="coast" />
+                                    <field name="declared_value_inUSD"/>
+                                    <field name="total_price" invisible="1"/>
+                                </group>
+                                    <group>
+                                        <field name="demo_id"  nolabel="1">
+                                                <tree create="true" editable="top" >
+                                                    <field name="product_description" />
+                                                    <field name="weight"/>
+                                                    <field name="product_packaging_id" />
+                                                    <field name="length"/>
+                                                    <field name="height"/>
+                                                    <field name="width"/>
+                                                    <field name="no_of_boxes"/>
+                                                    <field name="dimensional_weight"/>
+                                                    <field name="chargeable_weight" />
+                                                    <field name="total_weight_id" sum="total"/>
+                                                </tree>
+                                        </field>
+                                    </group>
+                                <group col="4">
+                                    <field name="no_of_pieces" />
+                                     <field name="total_weight" />
+                                    <field name="discount_price"/>
+<!--                                    <field name="form_tax_id" widget="many2many_tags"/>-->
+                                </group>
+                                <group string="Routing Information" col="4">
+                                        <!-- </group> </page> <page string="Routing Information">
+                                        <group col="4" colspan="4"> -->
+                                        <field name="deliver_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="routing_id" invisible="1"
+                                               attrs="{'readonly':[('state','!=','draft')]}"/>
+
+    <!--                                    <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                        <field name="distance" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="delivery_carrier_charges"
+                                               attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+    <!--                                    <field name="no_of_pieces"/>-->
+    <!--                                    <field name="dimension"/>-->
+    <!--                                    <field name="weight"/>-->
+    <!--                                    <field name="uom_categ"/>-->
+
+    <!--                                    <field name="distance" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+
+                                        <field name="delivery_carrier_id" required="0"
+                                               attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+    <!--                                    <field name="discount_price"/>-->
+    <!--                                    <field name="product_packaging_id" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+    <!--                                    <field name="product_description" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                        <!-- <field name="sub_total" attrs="{'readonly':[('state','!=','draft')]}"/> -->
+                                        <field name="paid" readonly="0"/>
+                                        <field name="refund" readonly="1" attrs="{'invisible': [('refund', '=', False)]}"/>
+                                        <field name="cod" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="terms_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="cod_amount" attrs="{'invisible':[('cod','=',False)]}"/>
+                                        <field name="invoice_id" invisible="1"/>
+                                        <field name="refund_invoice_id" invisible="1"/>
+                                </group>
+                                <group class="oe_subtotal_footer">
+                                    <field name="sub_total" readonly="1" attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="discount" readonly="1" attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="discount_amount" readonly="1"
+                                           attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="final_price" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="History">
+                                <group>
+                                    <field name="history_ids" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="from_location"/>
+                                            <field name="to_location"/>
+                                            <field name="price"/>
+                                            <field name="distance"/>
+                                            <field name="driver_id"/>
+                                            <field name="carrier_id"/>
+                                            <field name="courier_id"/>
+                                            <field name="history_time"/>
+                                            <field name="from_state" string="From State"/>
+                                            <field name="to_state" string="To State"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Note">
+                                <group>
+                                    <field name="note" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                            </page>
+                            <page string="Images">
+                                <group>
+                                    <field name="courier_delivery_date"/>
+
+                                    <field string="Delivery Image" name="deliver_image_ids" widget="image"/>
+                                    <field string="Signature" name="receiver_signature_ids" widget="image"/>
+
+                                </group>
+
+                            </page>
+                        </notebook>
+
+                    </group>
+                    <!-- <footer> <group class="oe_subtotal_footer oe_right"> <h5><field
+                        name="sub_total" readonly="1"/></h5> <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                        </group> </footer> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="view_courier_courier_filter" model="ir.ui.view">
+        <field name="name">Courier Search</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <search string="Search Courier">
+                <group expand="0" string="Group By">
+                    <filter string="Zone" domain="[]" context="{'group_by':'courier_zone_id'}"/>
+
+                </group>
+                <filter icon="terp-go-today" string="Today" help="Todays' Leads"
+                        domain="[('create_date','&lt;', time.strftime('%%Y-%%m-%%d 23:59:59')), ('create_date','&gt;=', time.strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter icon="terp-go-week" string="7 Days" help="Leads creating during last 7 days"
+                        domain="[('create_date','&lt;', time.strftime('%%Y-%%m-%%d 23:59:59')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter icon="terp-go-week" string="Not Assigned orders" help="Not Assigned orders"
+                        domain="[('delivery_driver_id','=',False)]"/>
+                <filter  name="international" string="International delivery" help="International"
+                        domain="[('booking_level','=','international_delivery')]"/>
+                <filter  name="domestic" string="Domestic delivery" help="Domestic delivery"
+                        domain="[('booking_level','=','domestic_delivery')]"/>
+
+                <separator orientation="vertical"/>
+                <!--                <field name="name"/>-->
+                <!--                <field name="name" string="name" filter_domain="['|',('sender_id.phone','ilike',self), ('receiver_id.phone','ilike',self)]"/>-->
+                <field name="name" string="name"
+                       filter_domain="['|', '|', '|', '|', ('sender_id.phone','ilike',self), ('receiver_id.phone','ilike',self), ('name','ilike',self), ('track_ref','ilike',self), ('number','ilike',self)]"/>
+
+                <field name="track_ref"/>
+                <field name="number"/>
+                <separator orientation="vertical"/>
+                <field name="sender_id"/>
+                <field name="receiver_id"/>
+                <newline/>
+                <filter name="new_courier" string="New" domain="[('state','in',('draft','invoiced'))]"/>
+                <newline/>
+                <filter name="deliverd_courier" string="Delivered" domain="[('state','=','delivered')]"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Source Warehouse" icon="terp-stage" domain="[]"
+                            context="{'group_by':'main_warehouse_id'}"/>
+
+                    <separator orientation="vertical"/>
+                    <filter string="Target Warehouse" icon="terp-stage" domain="[]"
+                            context="{'group_by':'target_warehouse_id'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="Sender" icon="terp-stage" domain="[]" context="{'group_by':'sender_id'}"/>
+                    <filter string="Recepient" icon="terp-stage" domain="[]" context="{'group_by':'receiver_id'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="Route" icon="terp-stage" domain="[]" context="{'group_by':'routing_id'}"/>
+                    <filter string="Invoice" icon="terp-stage" domain="[]" context="{'group_by':'invoice_id'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="State" icon="terp-stage" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Extended options..." groups="base.group_extended">
+                    <field name="deliver_date"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="view_courier_courier_tree_inter" model="ir.ui.view">
+        <field name="name">courier.courier.tree.inter</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" import="false" string="Courier General Information ">
+                <field name="number"/>
+                <field name="sender_id"/>
+                <field name="receiver_id"/>
+                <field name="routing_id"/>
+                <field name="distance"/>
+                <field name="final_price"/>
+                <field name="cod"/>
+                <field name="state"/>
+                <field name="track_ref"/>
+                <field name="courier_zone_id" string="Zone"/>
+                <!--                <field name="name"/>-->
+                <field name="main_warehouse_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="view_courier_courier_form_inter" model="ir.ui.view">
+        <field name="name">courier.courier.form.inter</field>
+        <field name="model">courier.courier</field>
+        <field name="arch" type="xml">
+            <form string="Courier General Information">
+                <header groups="base.group_user">
+                    <!--<button string="Packing" class="btn-primary" name="action_packing" type="object" states="picked"/>-->
+                    <!--<button string="Packing" class="btn-primary" name="action_packing" type="object" states="invoiced"/>-->
+                    <!-- <button string="Assign Driver" name="assign_pickup_driver" type="object" states="ready_to_pickup"/>-->
+                    <!-- <button string="Assign Driver" name="assign_delivery_driver" type="object" states="ready_for_dispatched"/>-->
+                    <!-- <button string="InProgress" name="action_inprogress" type="object" states="packing"/>-->
+<!--                    <button string="Create invoice" class="btn-primary" name="action_invoicing" states="draft"-->
+<!--                            type="object" />-->
+                    <button string="Picked up" class="btn-primary" name="set_to_pickedup" states="pickedup"
+                            type="object" />
+                    <!-- <button string="Ready for Dispatch" name="action_ready_to_dispatch" states="inprogress" type="object"/>-->
+                    <!--<button string="Dispatch" class="btn-primary" name="action_dispatch" states="outscan"-->
+                            <!--type="object"/>-->
+                    <button string="Picked from Location" class="btn-primary" name="action_pickup_done" type="object"
+                            states="ready_to_pickup"/>
+                    <button string="In-Scan" name="action_inscan" type="object" states="invoiced,picked"/>
+                    <button string="Out-Scan" name="action_outscan" type="object" states="inscan"/>
+                    <!-- <button string="Ready For Dispatch" name="action_outscan" type="object" states="inprogress"/>-->
+                    <button string="Delivered" class="btn-primary" name="action_delivered" type="object"
+                            states="outscan"/>
+                    <button string="Lost" class="btn-primary" name="action_lost" type="object" states="outscan"/>
+                    <button string="Damaged" class="btn-primary" name="action_damaged" type="object"
+                            states="outscan"/>
+                    <button string="Return" class="btn-primary" name="action_return" type="object" states="outscan"/>
+                    <button string="Claim" class="btn-primary" name="action_claim" type="object" states="outscan"/>
+                    <button string="Refunded" class="btn-primary" name="action_refund" type="object" states="claim"/>
+                    <button string="Cancel Courier" class="btn-primary" name="cancel_courier" type="object"
+                            attrs="{'invisible':['|',('state','not in',('invoiced','draft')),('paid','=',True)]}"
+                            context="{'cancel_courier':True}"/>
+                    <button string="Reset to Draft" class="btn-primary" name="set_to_draft" states="cancel"
+                            type="object"/>
+<!--                    <field name="state" widget="statusbar"-->
+<!--                           statusbar_visible="draft,inscan,outscan,delivered"-->
+<!--                           clickable="True" attrs="{'invisible': [('booking_level', '=', 'international_delivery')]}"/>-->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,on_transit,inscan,outscan,out_for_delivery,delivered"
+                           clickable="True" attrs="{'invisible': [('booking_level', '=', 'domestic_delivery')]}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_id', '=', False)]}">
+                            <field name="invoice_total" widget="statinfo" string="Invoice Total"/>
+                        </button>
+                        <button name="action_view_refund_invoice" type="object" class="oe_stat_button"
+                                icon="fa-undo" attrs="{'invisible': [('refund_invoice_id', '=', False)]}">
+                            <field name="refund_invoice_total" widget="statinfo" string="Refund Total"/>
+                        </button>
+                    </div>
+                    <group>
+                        <h1 class="mt0">
+                            <field name="number" class="oe_inline" readonly="1" nolable="1"/>
+                        </h1>
+                        <group col="4" colspan="4">
+                            <!-- <field name="name" attrs="{'readonly':[('state','!=','draft')]}" string="Sender Name"-->
+                            <!-- required="1"/>-->
+                            <field name="booking_level" required="1"/>
+                            <field name="sender_id"/>
+                            <field name="sender_phone" invisible="1"/>
+                            <field name="sender_mobile" invisible="1"/>
+                            <field name="courier_zone_id" invisible="1"/>
+                            <field name="courier_type_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="company_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="courier_method"/>
+                            <field name="service_type"/>
+                            <field name="date" string="Booking Date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." required="1" class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="area_id" placeholder="Area" class="o_address_state"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options='{"no_open": True}'/>
+                                <field name="zone_id" options='{"no_open": True, "no_create": True}'
+                                       class="o_address_state" placeholder="Zone"
+                                />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                            <field string="Pickup by" name="pickup_driver_id" required="0"
+                                   attrs="{'invisible':[('state','not in',['ready_to_pickup'])],'required':[('state','=','ready_to_pickup')]}"
+                                   domain="[('is_driver','=',True)]"/>
+                            <field string="Delivered By" name="delivery_driver_id" required="0"
+                                   attrs="{'invisible':[('state','not in',['outscan','dispatched'])],'required':[('state','=','outscan')]}"
+                                   domain="[('is_driver','=',True)]"/>
+
+<!--                            <field string="Warehouse" name="delivery_driver_id" required="0"-->
+<!--                                   attrs="{'invisible':[('state','not in',['outscan','dispatched'])],'required':[('state','=','outscan')]}"-->
+<!--                                   domain="[('is_driver','=',True)]"/>-->
+
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Information">
+                                <group col="4" colspan="4">
+                                    <separator string="Source and Destination" colspan="4"/>
+                                    <field name="sender_location_id" string="Pickup Location"
+                                           attrs="{'invisible':[('courier_method','!=','pickup_and_delivery')], 'required':[('courier_method','=','pickup_and_delivery')]}"/>
+                                    <field name="pickup_date_time" attrs="{'invisible':[('courier_method','!=','pickup_and_delivery')]}" />
+
+                                    <field name="delivered_by"/>
+
+                                    <field name="receiver_id" required="True" string="Recipient"
+
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="receiver_phone" invisible="1"/>
+                                    <field name="receiver_mobile" invisible="1"/>
+                                    <field name="delivery_location_ids" invisible="1" string="Delivery location"/>
+                                    <field name="track_ref" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="main_warehouse_id"
+                                           options="{'no_open':True,'no_create':True}"
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="target_warehouse_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <separator string="Product Specification" colspan="4"/>
+                                    <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="uom_categ"/>
+                                    <field name="declared_value"/>
+                                    <field name="coast" />
+                                    <field name="declared_value_inUSD"/>
+                                    <field name="total_price" invisible="1"/>
+                                </group>
+                                    <group>
+                                        <field name="demo_id"  nolabel="1">
+                                                <tree create="true" editable="top" >
+                                                    <field name="product_description" />
+                                                    <field name="weight"/>
+                                                    <field name="product_packaging_id" />
+                                                    <field name="length"/>
+                                                    <field name="height"/>
+                                                    <field name="width"/>
+                                                    <field name="no_of_boxes"/>
+                                                    <field name="dimensional_weight"/>
+                                                    <field name="chargeable_weight" />
+                                                    <field name="total_weight_id" sum="total"/>
+                                                </tree>
+                                        </field>
+                                    </group>
+                                <group col="4">
+                                    <field name="no_of_pieces" />
+                                    <field name="total_weight" />
+                                    <field name="discount_price"/>
+                                </group>
+                                <group col="4">
+                                    <field name="freight_charge" />
+                                    <field name="pickup_charge" />
+                                    <field name="ministry_charge" />
+                                    <field name="export_decharge" />
+                                    <field name="civil_aviation_charge" />
+                                    <field name="other_charge" />
+                                </group>
+                                <group string="Routing Information" col="4">
+
+                                        <!-- </group> </page> <page string="Routing Information">
+                                        <group col="4" colspan="4"> -->
+                                        <field name="deliver_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="routing_id" invisible="1"
+                                               attrs="{'readonly':[('state','!=','draft')]}"/>
+
+    <!--                                    <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                        <field name="distance" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="delivery_carrier_charges"
+                                               attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+    <!--                                    <field name="no_of_pieces"/>-->
+    <!--                                    <field name="dimension"/>-->
+    <!--                                    <field name="weight"/>-->
+    <!--                                    <field name="uom_categ"/>-->
+
+    <!--                                    <field name="distance" readonly="1" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+
+                                        <field name="delivery_carrier_id" required="0"
+                                               attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+    <!--                                    <field name="discount_price"/>-->
+    <!--                                    <field name="product_packaging_id" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+    <!--                                    <field name="product_description" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                        <!-- <field name="sub_total" attrs="{'readonly':[('state','!=','draft')]}"/> -->
+                                        <field name="paid" readonly="0"/>
+                                        <field name="refund" readonly="1" attrs="{'invisible': [('refund', '=', False)]}"/>
+                                        <field name="cod" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="terms_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="cod_amount" attrs="{'invisible':[('cod','=',False)]}"/>
+                                        <field name="invoice_id" invisible="1"/>
+                                        <field name="refund_invoice_id" invisible="1"/>
+                                </group>
+                                <group class="oe_subtotal_footer">
+                                    <field name="sub_total" readonly="1" attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="discount" readonly="1" attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="discount_amount" readonly="1"
+                                           attrs="{'invisible':[('discount','=',0.0)]}"/>
+                                    <field name="final_price" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="History">
+                                <group>
+                                    <field name="history_ids" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="from_location"/>
+                                            <field name="to_location"/>
+                                            <field name="price"/>
+                                            <field name="distance"/>
+                                            <field name="driver_id"/>
+                                            <field name="carrier_id"/>
+                                            <field name="courier_id"/>
+                                            <field name="history_time"/>
+                                            <field name="from_state" string="From State"/>
+                                            <field name="to_state" string="To State"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Note">
+                                <group>
+                                    <field name="note" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                            </page>
+                            <page string="Images">
+                                <group>
+                                    <field name="courier_delivery_date"/>
+
+                                    <field string="Delivery Image" name="deliver_image_ids" widget="image"/>
+                                    <field string="Signature" name="receiver_signature_ids" widget="image"/>
+
+                                </group>
+
+                            </page>
+                        </notebook>
+
+                    </group>
+                    <!-- <footer> <group class="oe_subtotal_footer oe_right"> <h5><field
+                        name="sub_total" readonly="1"/></h5> <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                        </group> </footer> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_courier_courier_form_international" model="ir.actions.act_window">
+        <field name="name">International delivery</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="view_id" ref="view_courier_courier_tree_inter"/>-->
+<!--        <field name="domain">[('booking_level','=','international_delivery')]</field>-->
+<!--        <field name="context">{'search_default_new_courier':1}</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="oe_view_nocontent_create">-->
+<!--                Click here to define a New Courier.-->
+<!--            </p>-->
+<!--        </field>-->
+    </record>
+
+    <record id="action_courier_courier_form_international_tree" model="ir.actions.act_window.view">
+        <field name="name">International delivery</field>
+<!--        <field name="res_model">courier.courier</field>-->
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_courier_courier_tree_inter"/>
+        <field name="domain">[('booking_level','=','international_delivery')]</field>
+        <field name="context">{'search_default_new_courier':1}</field>
+        <field name="act_window_id" ref="action_courier_courier_form_international"/>
+
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to define a New Courier.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_courier_courier_form_international_form" model="ir.actions.act_window.view">
+        <field name="name">International delivery form</field>
+<!--        <field name="res_model">courier.courier</field>-->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_courier_courier_form_inter"/>
+        <field name="act_window_id" ref="action_courier_courier_form_international"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to define a New Courier.
+            </p>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="action_courier_domestic_form" model="ir.actions.act_window">
+        <field name="name">Domestic delivery</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree"/>
+        <field name="domain">[('booking_level','=','domestic_delivery')]</field>
+        <field name="context">{'search_default_new_courier':1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to define a New Courier.
+            </p>
+        </field>
+    </record>
+
+
+
+
+    <menuitem name="Booking" id="menu_action_courier_courier_formdemo" parent="menu_courier" sequence="1"/>
+    <menuitem action="action_courier_courier_form_international" id="menu_action_courier_courier_form_international" parent="menu_action_courier_courier_formdemo" />
+    <menuitem action="action_courier_domestic_form" id="menu_action_courier_domestic_form" parent="menu_action_courier_courier_formdemo" />
+
+    <record id="action_courier_courier_tree" model="ir.actions.act_window">
+        <field name="name">All Couriers</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree"/>
+        <field name="context">{'search_default_deliverd_courier':1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to define a New Courier.
+            </p>
+        </field>
+    </record>
+    <menuitem action="action_courier_courier_tree" id="menu_action_courier_courier_tree" parent="menu_courier" />
+
+    <!-- ##############################COURIER_HISTORY############################################# -->
+    <record id="view_courier_history_tree" model="ir.ui.view">
+        <field name="name">courier.history.tree</field>
+        <field name="model">courier.history</field>
+        <field name="arch" type="xml">
+            <tree string="Courier History Information " create="false">
+                <field name="name"/>
+                <field name="courier_id"/>
+                <field name="employee_id"/>
+                <field name="from_location"/>
+                <field name="to_location"/>
+                <!-- <field name="carrier_id"/> -->
+                <!-- <field name="provider"/> -->
+                <field name="dispatch_time"/>
+                <field name="deliver_time"/>
+                <field name="distance"/>
+                <field name="price"/>
+                <field name="days"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_history_form" model="ir.ui.view">
+        <field name="name">courier.history.form</field>
+        <field name="model">courier.history</field>
+        <field name="arch" type="xml">
+            <form string="Courier History Information " create="false">
+                <sheet>
+                    <group col="4" colspan="4">
+                        <field name="name"/>
+                        <field name="courier_id"/>
+                        <notebook colspan="4">
+                            <page string="General Information">
+                                <group>
+                                    <group string="Location Details">
+                                        <field name="from_location" string="From"/>
+                                        <field name="to_location" string="To"/>
+                                    </group>
+                                    <group string="Carrier Information">
+                                        <field name="carrier_id"/>
+                                        <!-- <field name="provider"/> -->
+                                        <field name="dispatch_time"/>
+                                        <field name="deliver_time"/>
+                                    </group>
+                                </group>
+                                <group string="Computions">
+                                    <field name="distance" class="oe_inline"/>
+                                    <field name="days" class="oe_inline"/>
+                                    <field name="price" class="oe_inline"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_courier_history_filter" model="ir.ui.view">
+        <field name="name">Courier History Search</field>
+        <field name="model">courier.history</field>
+        <field name="arch" type="xml">
+            <search string="Courier History">
+                <filter icon="terp-go-today" string="Today" help="Todays' Leads"
+                        domain="[('create_date','&lt;', time.strftime('%%Y-%%m-%%d 23:59:59')), ('create_date','&gt;=', time.strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter icon="terp-go-week" string="7 Days" help="Leads creating during last 7 days"
+                        domain="[('create_date','&lt;', time.strftime('%%Y-%%m-%%d 23:59:59')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <separator orientation="vertical"/>
+                <field name="name"/>
+                <field name="courier_id"/>
+                <separator orientation="vertical"/>
+                <field name="from_location"/>
+                <field name="to_location"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter string="Courier" icon="terp-stage" domain="[]" context="{'group_by':'courier_id'}"/>
+                    <filter string="Employee" icon="terp-stage" domain="[]" context="{'group_by':'employee_id'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="From" icon="terp-stage" domain="[]" context="{'group_by':'from_location'}"/>
+                    <filter string="To" icon="terp-stage" domain="[]" context="{'group_by':'to_location'}"/>
+                    <separator orientation="vertical"/>
+                    <!-- <filter string="Provider" icon="terp-stage" domain="[]" context="{'group_by':'provider'}"/> -->
+                    <filter string="Carrier" icon="terp-stage" domain="[]" context="{'group_by':'carrier_id'}"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Extended options..." groups="base.group_extended">
+                    <field name="dispatch_time"/>
+                    <field name="deliver_time"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_courier_history_form" model="ir.actions.act_window">
+        <field name="name">Dispatch Courier</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree"/>
+        <field name="domain">[('state','=','dispatched')]</field>
+    </record>
+
+    <menuitem action="action_courier_history_form" id="menu_action_courier_history_form" parent="menu_courier_move"/>
+
+    <record id="courier_warehouse_form_view" model="ir.ui.view">
+        <field name="name">courier.warehouse.form.view</field>
+        <field name="model">courier.warehouse</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+
+                            <field name="date" string="Date"/>
+<!--                            <field name="courier_id" />-->
+                        </group>
+
+
+
+                        <group>
+                            <field name="driver_id"/>
+                            <field name="collected_by"/>
+                            <field name="main_warehouse_id" invisible="1"/>
+                        </group>
+
+                    </group>
+                    <notebook>
+                        <page string="Scanning items">
+                            <field name="product_list">
+
+                                <tree string="" editable="bottom">
+                                    <field name="item_name"/>
+                                    <field name="in_date" string="Date"/>
+                                    <field name="Barcode"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Zone Tree View -->
+    <record id="courier_warehouse_tree_view" model="ir.ui.view">
+        <field name="name">courier.warehouse.tree.view</field>
+        <field name="model">courier.warehouse</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="courier_id"/>
+                <field name="driver_id"/>
+                <field name="collected_by"/>
+                <field name="main_warehouse_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Zone Action View -->
+    <record id="action_courier_warehouse" model="ir.actions.act_window">
+        <field name="name">Warehouse</field>
+        <field name="res_model">courier.warehouse</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_warehouse_list_form" model="ir.actions.act_window">
+        <field name="name">Warehouse</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree_list"/>
+        <field name="domain">[('state','in',('inscan','outscan'))]</field>
+    </record>
+    <menuitem action="action_warehouse_list_form" id="menu_action_warehouse_view_all" parent="menu_courier_move"
+              sequence="6"/>
+
+
+    <record id="action_inscan_couier_form" model="ir.actions.act_window">
+        <field name="name">In Scan List</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree_list"/>
+        <field name="domain">[('state','=','inscan')]</field>
+    </record>
+
+    <menuitem action="action_inscan_couier_form" id="menu_inscan_couier_form" parent="menu_courier_move"/>
+
+    <record id="action_outscan_couier_form" model="ir.actions.act_window">
+        <field name="name">Out Scan List</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree_list"/>
+        <field name="domain">[('state','=','outscan')]</field>
+    </record>
+
+    <menuitem action="action_outscan_couier_form" id="menu_outscan_couier_form"
+              parent="menu_courier_move"/>
+
+    <record id="action_pickup_couier_form" model="ir.actions.act_window">
+        <field name="name">Ready For Pickup List</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree"/>
+        <field name="domain">[('state','=','ready_to_pickup')]</field>
+    </record>
+
+    <!--    <menuitem action="action_pickup_couier_form" id="menu_read_pickup_couier_form" parent="menu_courier_move"/>-->
+
+    <record id="action_read_dispatch_form" model="ir.actions.act_window">
+        <field name="name">Ready for Dispatch List</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_courier_tree"/>
+        <field name="domain">[('state','=','ready_for_dispatched')]</field>
+    </record>
+
+    <!--    <menuitem action="action_read_dispatch_form" id="menu_read_dispatch_form" parent="menu_courier_move"/>-->
+
+    <record id="action_courier_history_tree" model="ir.actions.act_window">
+        <field name="name">Courier Moves</field>
+        <field name="res_model">courier.history</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_history_tree"/>
+    </record>
+
+    <menuitem action="action_courier_history_tree" id="menu_action_courier_history_tree" parent="menu_courier_move"/>
+    <!-- ##############################COURIER_ROUTING############################################# -->
+    <record id="view_courier_routing_form" model="ir.ui.view">
+        <field name="name">courier.routing.form</field>
+        <field name="model">courier.routing</field>
+        <field name="arch" type="xml">
+            <form string="Courier Routing">
+                <sheet>
+                    <group col="4" colspan="4">
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </div>
+                        <separator string="Locations" colspan="4"/>
+                        <group col="4" colspan="4">
+                            <field name="from_location_id" required="1"/>
+                            <field name="to_location_id" required="1"/>
+                        </group>
+                        <separator string="Computations" colspan="6"/>
+                        <group col="6" colspan="6">
+                            <field name="distance"/>
+                            <field name="days"/>
+                            <!-- <field name="price"/> -->
+                        </group>
+                        <newline/>
+                        <separator string="Routing Path" colspan="6"/>
+                        <field name="path_ids" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_courier_routing_tree" model="ir.ui.view">
+        <field name="name">courier.routing.tree</field>
+        <field name="model">courier.routing</field>
+        <field name="arch" type="xml">
+            <tree string="Courier Routing">
+                <field name="name"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <field name="distance"/>
+                <field name="days"/>
+                <field name="price"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_courier_routing_filter" model="ir.ui.view">
+        <field name="name">Routing Search</field>
+        <field name="model">courier.routing</field>
+        <field name="arch" type="xml">
+            <search string="Search Routings">
+                <filter name="from_location_id" domain="[('from_location_id','!=',False)]" string="From"/>
+                <filter string="Name" icon="terp-stage" domain="[('name','!=',False)]"/>
+                <filter string="To" icon="terp-stage" domain="[('to_location_id','!=',False)]"/>
+                <field name="name"/>
+                <separator orientation="vertical"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter string="Name" icon="terp-stage" domain="[]" context="{'group_by':'name'}"/>
+                    <separator orientation="vertical"/>
+                    <filter string="From" icon="terp-stage" domain="[]" context="{'group_by':'from_location_id'}"/>
+                    <filter string="To" icon="terp-stage" domain="[]" context="{'group_by':'to_location_id'}"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Extended options..." groups="base.group_extended">
+                    <field name="distance"/>
+                    <separator orientation="vertical"/>
+                    <field name="days"/>
+                    <separator orientation="vertical"/>
+                    <field name="price"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ##############################COURIER_ROUTING_PATH############################################# -->
+    <record id="view_courier_routing_path_form" model="ir.ui.view">
+        <field name="name">courier.routing.path.form</field>
+        <field name="model">courier.routing.path</field>
+        <field name="arch" type="xml">
+            <form string="Routing Paths">
+                <sheet>
+                    <group>
+                        <field name="name" required="1" class="oe_inline"/>
+                    </group>
+                    <separator string="Location Details" colspan="4"/>
+                    <group col="4" colspan="4">
+                        <field name="from_location_id" required="1"/>
+                        <field name="to_location_id" required="1"/>
+                        <!-- <field name="zone_id" required="1"/> -->
+                    </group>
+                    <separator string="Computations" colspan="4"/>
+                    <group col="6" colspan="4">
+                        <field name="distance"/>
+                        <field name="days"/>
+                        <!-- <field name="price"/> -->
+                    </group>
+                    <!-- <separator string="Providers" colspan="4"/>
+                    <field name="provider_id" nolabel="1"/> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_courier_routing_path_tree" model="ir.ui.view">
+        <field name="name">courier.routing.path.tree</field>
+        <field name="model">courier.routing.path</field>
+        <field name="arch" type="xml">
+            <tree string="Routing Paths">
+                <field name="name"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <field name="distance"/>
+                <field name="days"/>
+                <!-- <field name="price"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_courier_routing_path_form" model="ir.actions.act_window">
+        <field name="name">Courier Routing Path Information</field>
+        <field name="res_model">courier.routing.path</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_courier_routing_path_tree"/>
+    </record>
+
+    <menuitem action="action_courier_routing_path_form" id="menu_action_courier_routing_path_form"
+              parent="configuration"/>
+
+    <menuitem action="delivery.action_delivery_carrier_form" id="delivery.menu_action_delivery_carrier_form"
+              parent="configuration" sequence="1"/>
+
+    <!-- ##############################COURIER_TYPE############################################# -->
+    <record id="courier_type_form_view" model="ir.ui.view">
+        <field name="name">courier.type.form.view</field>
+        <field name="model">courier.type</field>
+        <field name="arch" type="xml">
+            <form string="Courier Type Information ">
+                <sheet>
+                    <group col="4" colspan="4">
+                        <field name="name" required="1"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="courier_type_tree_view" model="ir.ui.view">
+        <field name="name">courier.type.tree.view</field>
+        <field name="model">courier.type</field>
+        <field name="arch" type="xml">
+            <tree string="Courier Type Information ">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="courier_type_action" model="ir.actions.act_window">
+        <field name="name">Courier Types</field>
+        <field name="res_model">courier.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="courier_type_tree_view"/>
+    </record>
+
+    <menuitem action="courier_type_action" id="menu_courier_type" parent="configuration" sequence="2"/>
+
+    <template id="custom_menu_secondary" inherit_id="web.menu_secondary">
+        <xpath expr="//div[@class='o_sub_menu_footer']" position="replace">
+            <div class="o_sub_menu_footer">Powered by
+                <a t-att-href="''" target="_blank">
+                    <span t-esc="'Febno'"/>
+                </a>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Booking Courier">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/courier/static/src/css/courier_css.css"/>
+
+            <script type="text/javascript" src="/courier/static/src/js/booking_form.js"/>
+        </xpath>
+    </template>
+
+    <template id="booking_bulk_save" name="Booking Courier - Success" page="True">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="col-sm-12 courier_main">
+                    <div class="book_bg_img">
+                        <br/>
+                        <center>
+                            <br></br>
+                            <t t-if="result=='done'">
+                            <span class="tagline">Import Done</span>
+                            </t>
+                            <t t-else="">
+                                <span class="tagline">There is problem in upload kindly check with the administrator</span>
+                            </t>
+                        </center>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="booking_bulk_import" name="Booking Courier - Success" page="True">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="col-sm-12 courier_main">
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <span class="wlc">Bulk Import/Export</span>
+                    <br/>
+                    <br/>
+                    <form id="bulk_import_form" action="/bulkimport" method="post"
+                          enctype="multipart/form-data"
+                          class="s_website_form form-horizontal container-fluid mt32">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <span style="font-size: 15px;">Save your time by directly performing import.export process
+                            here(it only accepts .csv format). You can import/export thousands of records of your
+                            desired post type in no time, Now to download the sample file.
+                        </span>
+                        <br/>
+                        <h4>CSV Import</h4>
+                        <hr/>
+                        <span style="font-size: 15px;">Directly upload all the content of your desired custom post
+                            type
+                        </span>
+                        <div>
+                            <br/>
+                            <input type="file" name="attachment" multiple="true"
+                                   accept="xls,csv"/>
+                        </div>
+                        <br/>
+                        <div>
+                            <button class="import_file btn btn-primary submit">Import CSV</button>
+                            <button class="download_import_file btn btn-primary">Download CSV</button>
+                            <br/>
+                            <span style="font-size: 10px;font-style: italic;">Download the sample file to see the
+                                correct structure of the .csv file .To use bulk upload with
+                                customer fields.
+                            </span>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

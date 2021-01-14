@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="driver_commission_tree" model="ir.ui.view">
+        <field name="name">driver.commission.view.tree</field>
+        <field name="model">driver.commission</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="commission_type"/>
+                <field name="commission_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="driver_commission_form" model="ir.ui.view">
+        <field name="name">driver.commission.view.form</field>
+        <field name="model">driver.commission</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="employee_id" domain="[('is_driver', '=', True)]"
+                           options="{'no_open': True, 'no_create': True}"/>
+                    <field name="commission_type"/>
+                    <field name="commission_amount"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_driver_commission" model="ir.actions.act_window">
+        <field name="name">Drivers Commission</field>
+        <field name="res_model">driver.commission</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to record a new record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="open_driver_commission" id="menu_driver_commission" parent="configuration" sequence="20"/>
+</odoo>
