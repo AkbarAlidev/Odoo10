@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+        <record model="ir.ui.view" id="view_courier_carrier_form_ext">
+            <field name="name">courier.routing.path.form.inherit</field>
+            <field name="model">courier.routing.path</field>
+            <field name="inherit_id" ref="courier.view_courier_routing_path_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group[1]" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_map" string="Map" type="object" class="oe_stat_button" icon="fa-map-marker">
+                        </button>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_courier_routing_form_ext">
+            <field name="name">courier.routingform.inherit</field>
+            <field name="model">courier.routing</field>
+            <field name="inherit_id" ref="courier.view_courier_routing_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="to_location_id" position="after">
+                    <button name="open_map" string="Map" type="object" icon="fa-external-link"/>
+                </field>
+            </field>
+        </record>
+</odoo>
