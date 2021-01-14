@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <act_window id="act_res_courier_map" name="Map" res_model="courier.courier"
+            view_type="map" view_mode="map" />
+        <record id="view_courier_widget_form" model="ir.ui.view">
+            <field name="name">Google Places Courier Form</field>
+            <field name="model">courier.courier</field>
+            <field name="inherit_id" ref="courier.view_courier_courier_form" />
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+<!--                    <button name="%(web_google_maps.act_res_courier_map)d" type="action"-->
+<!--                        class="oe_stat_button" context="{'search_default_name': name}"-->
+<!--                        icon="fa-map-marker" string="Map"-->
+<!--                        attrs="{'invisible': []}" />-->
+<!--                    <button name="open_map" type="object" class="oe_stat_button"-->
+<!--                        context="{'route_direction': True}" icon="fa-map-signs" string="Route"-->
+<!--                        attrs="{'invisible': []}" />-->
+                </div>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <!-- <field name="current_location" widget="gplaces_autocomplete" /> -->
+<!--                    <label for="street" string="Current Location" />-->
+<!--                    <div class="o_address_format">-->
+<!--                        <field name="street" placeholder="Street..." class="o_address_street" widget="gplaces_autocomplete" />-->
+<!--                        <field name="street2" placeholder="Street 2..." class="o_address_street" widget="gplaces_address_form" />-->
+<!--                        <field name="city" placeholder="City" />-->
+<!--                        <field name="state_id" class="o_address_state" placeholder="State"-->
+<!--                            options='{"no_open": True}' />-->
+<!--                        <field name="zip" placeholder="ZIP" class="o_address_zip" />-->
+<!--                        <field name="country_id" placeholder="Country" class="o_address_country"-->
+<!--                            options='{"no_open": True, "no_create": True}' />-->
+<!--                    </div>-->
+                    <field name="previous_location" readonly="1" invisible="1"/>
+                    <field name="latitude" attrs="{'readonly':[('state','!=','draft')]}" invisible="1" />
+                    <field name="longitude" attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+                </xpath>
+            </field>
+
+        </record>
+
+
+        <record id="view_courier_map" model="ir.ui.view">
+            <field name="name">view.courier.map</field>
+            <field name="model">courier.courier</field>
+            <field name="arch" type="xml">
+                <map string="Map" lat="latitude" lng="longitude">
+                    <field name="street" />
+                    <field name="street2" />
+                    <field name="city" />
+                    <field name="zip" />
+                    <field name="state_id" />
+                    <field name="country_id" />
+                    <field name="latitude" />
+                    <field name="longitude" />
+                </map>
+            </field>
+        </record>
+
+        <record id="courier.action_courier_courier_form" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,map</field>
+        </record>
+
+        <record id="courier.action_courier_courier_tree" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,map</field>
+        </record>
+
+        <record id="action_tracking_courier_form" model="ir.actions.act_window">
+        <field name="name">Courier Tracking</field>
+        <field name="res_model">courier.courier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="courier.view_courier_courier_tree_list"/>
+
+    </record>
+        <menuitem action="action_tracking_courier_form" id="ssssss" parent="courier.menu_courier_move"/>
+
+    </data>
+</odoo>
