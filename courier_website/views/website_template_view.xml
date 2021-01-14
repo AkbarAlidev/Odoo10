@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="search_courier" name="Search Box">
+            <form target="_self" action="/page/trackingpage" method="post"
+                  class="s_website_form form-horizontal container-fluid" enctype="multipart/form-data">
+                <div class="input-group">
+                    <div class="oe_search">
+                        <input type="text" class="form-control o_website_form_input"
+                               name="track" id="track_id" placeholder="e.g. COU/2018/00001 or TRACK/2018/00001"/>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default oe_search_button">
+                            <i class="fa fa-search"/>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </template>
+
+        <!-- webpage record -->
+        <template id="website_courier_page_id" name="Courier Tracking" page="True">
+            <t t-call="website.layout">
+                <!-- <section class="fix_bg_snippet fix_bg_option s_fix_bg_snippet oe_img_bg oe_custom_bg wlcm_section">
+                </section> -->
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="col-sm-12 courier_main">
+                        <div class="bg_img">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <center>
+                                <span class="wlc">Welcome to</span>
+                                <br/>
+                                <span class="company_name" t-esc="request.env.user.company_id.name"/>
+                                <br/>
+                                <span class="tagline" t-esc="request.env.user.company_id.rml_header1"/>
+                            </center>
+                            <br/>
+                            <br/>
+                            <center>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-6">
+                                    <t t-call="courier_website.search_courier"/>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <br/>
+                            </center>
+                            <t t-if="show and not track">
+                                <br/>
+                                <div class="row">
+                                    <center>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-6 ">
+                                            <span class="warning_msg">Please enter proper data !</span>
+                                        </div>
+                                        <div class="col-sm-3"></div>
+                                    </center>
+                                </div>
+                            </t>
+                            <t t-if="show and track">
+                                <br/>
+                                <div class="row">
+                                    <center>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-6 ">
+                                            <span class="warning_msg">
+                                                The courier tracking number you are trying to search for is invalid
+                                                or wrong. Please try to search with the right tracking number.
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-3"></div>
+                                    </center>
+                                </div>
+                            </t>
+                            <t t-if="courier">
+                                <br/>
+                                <div class="row">
+                                    <center>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-8">
+                                            <t t-foreach="courier" t-as="c">
+                                                <!-- <div class="status_bar"> </div> -->
+                                                <div class="courier_data">
+                                                    <div class="row">
+                                                        <div class="courier_track"
+                                                             style="margin-top:30px !important;">
+                                                            <center>
+                                                                <b>
+                                                                    <span class="data_heder">Order Tracking :</span>
+                                                                    <span class="data_heder" t-esc="c.number"/>
+                                                                </b>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 courier_details">
+                                                            <b>
+                                                                <span class="data_detail">Sender :</span>
+                                                                <span class="data_detail" t-esc="c.sender_id.name"/>
+                                                            </b>
+                                                        </div>
+                                                        <div class="col-sm-6 courier_details">
+                                                            <b>
+                                                                <span class="data_detail">Type:</span>
+                                                                <span class="data_detail"
+                                                                      t-esc="c.courier_type_id.name"/>
+                                                            </b>
+                                                        </div>
+                                                        <div class="col-sm-6 courier_details">
+                                                            <b>
+                                                                <span class="data_detail">Recipient :</span>
+                                                                <span class="data_detail"
+                                                                      t-esc="c.receiver_id.name"/>
+                                                            </b>
+                                                        </div>
+                                                        <div class="col-sm-6 courier_details">
+                                                            <b>
+                                                                <span class="data_detail">Expected Delivery Date :
+                                                                </span>
+                                                                <span class="data_detail" t-esc="c.deliver_date"/>
+                                                            </b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row courier_track">
+                                                        <div class="col-sm-6 ">
+                                                            <b>
+                                                                <span class="data_heder">Current Location :</span>
+                                                                <span class="data_heder" t-esc="c.street"/>
+                                                            </b>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <t t-if="c.state">
+                                                                <b>
+                                                                    <span class="data_heder">Current State :</span>
+                                                                    <t t-if="not c.state =='inprogress'">
+                                                                        <span class="data_heder"
+                                                                              t-esc="c.state.title()"/>
+                                                                    </t>
+                                                                    <t t-if="c.state=='inprogress'">
+                                                                        <span class="data_heder">In Progress</span>
+                                                                    </t>
+                                                                </b>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="status_his">
+                                                            <t t-if="c.routing_id">
+                                                                <ul class="courier_status_ul">
+                                                                    <t t-foreach="c.history_ids" t-as="hist">
+                                                                        <t t-if="hist and hist.to_state">
+                                                                            <li class="courier_status_li"
+                                                                                   style="color:darkgreen;">
+                                                                                    <div class="aab">
+                                                                                        <t t-esc="hist.to_state.title()"/>
+                                                                                    </div>
+                                                                                    <div class="aa"></div>
+                                                                                    <div class="arrow_temp">
+                                                                                       <i class="fas fa-arrow-alt-circle-right fa-3x"/>
+                                                                                    </div>                                                                             </li>
+                                                                        </t>
+<!--                                                                        <t t-if="hist and hist.to_location">-->
+<!--                                                                            <t t-if="locations[hist.to_location]=='current'">-->
+<!--                                                                                <li class="courier_status_li"-->
+<!--                                                                                    style="color:darkgreen;">-->
+<!--                                                                                    <div class="aab">-->
+<!--                                                                                        <t t-esc="hist.to_location"/>-->
+<!--                                                                                    </div>-->
+<!--                                                                                    <div class="aa"></div>-->
+<!--                                                                                    <div class="arrow_temp">-->
+<!--                                                                                        <i class="fas fa-arrow-alt-circle-right fa-3x"/>-->
+<!--                                                                                    </div>-->
+<!--                                                                                </li>-->
+<!--                                                                            </t>-->
+<!--                                                                            <t t-if="locations[hist.to_location]=='done'">-->
+<!--                                                                                <li class="courier_status_li"-->
+<!--                                                                                    style="color:darkgreen;">-->
+<!--                                                                                    <div class="aab">-->
+<!--                                                                                        <t t-esc="hist.to_location"/>-->
+<!--                                                                                    </div>-->
+<!--                                                                                    <div class="aa"></div>-->
+<!--                                                                                    <div class="arrow_temp">-->
+<!--                                                                                        <i class="fas fa-arrow-alt-circle-right fa-3x"/>-->
+<!--                                                                                    </div>-->
+<!--                                                                                </li>-->
+<!--                                                                            </t>-->
+<!--                                                                        </t>-->
+                                                                    </t>
+                                                                    <t t-if="c.routing_id.to_location_id.street">
+                                                                        <t t-if="locations[c.routing_id.to_location_id.street]=='current'">
+                                                                            <li class="courier_status_li"
+                                                                                style="color:darkgreen;">
+                                                                                <div class="aab">
+                                                                                    <t t-esc="c.routing_id.to_location_id.street"/>
+                                                                                </div>
+                                                                                <div class="aa"></div>
+                                                                                <div class="arrow_temp">
+                                                                                    <i class="fas fa-arrow-alt-circle-right fa-3x"/>
+                                                                                </div>
+                                                                            </li>
+                                                                        </t>
+                                                                        <t t-if="locations[c.routing_id.to_location_id.street]=='grayout'">
+                                                                            <li class="courier_status_li"
+                                                                                style="color:gray;">
+                                                                                <div class="aab" style="color:gray;">
+                                                                                    <t t-esc="c.routing_id.to_location_id.street"/>
+                                                                                </div>
+                                                                                <div class="aa"></div>
+                                                                                <div class="arrow_temp">
+                                                                                    <i class="fas fa-arrow-alt-circle-right fa-3x"/>
+                                                                                </div>
+                                                                            </li>
+                                                                        </t>
+                                                                    </t>
+                                                                </ul>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </center>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+
+
+
+    </data>
+</odoo>
